@@ -11,7 +11,7 @@ from datetime import datetime
 import time
 
 class BabyERPAPITester:
-    def __init__(self, base_url="https://littlelife-plan.preview.emergentagent.com"):
+    def __init__(self, base_url="https://caelestis-baby.preview.emergentagent.com"):
         self.base_url = base_url
         self.api_url = f"{base_url}/api"
         self.tests_run = 0
@@ -344,7 +344,7 @@ class BabyERPAPITester:
 def main():
     """Main test execution"""
     print("Baby ERP API Testing Suite")
-    print("Testing against: https://littlelife-plan.preview.emergentagent.com")
+    print("Testing against: https://caelestis-baby.preview.emergentagent.com")
     print("Starting tests in 2 seconds...")
     time.sleep(2)
     
