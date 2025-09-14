@@ -246,30 +246,54 @@ const Home = () => {
                       )}
                       
                       <div className="flex gap-2 pt-2">
-                        <Button
-                          size="sm"
-                          onClick={() => {
-                            const qty = parseInt(prompt('How many units to add?') || '1');
-                            if (qty > 0) addStock(item.id, qty);
-                          }}
-                          className="flex-1 text-xs"
-                        >
-                          <Plus className="h-3 w-3 mr-1" />
-                          Add
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => {
-                            const qty = parseInt(prompt('How many units used?') || '1');
-                            if (qty > 0) useItem(item, qty);
-                          }}
-                          disabled={item.current_stock === 0}
-                          className="flex-1 text-xs"
-                        >
-                          <Minus className="h-3 w-3 mr-1" />
-                          Use
-                        </Button>
+                        <div className="flex gap-1 flex-1">
+                          <Button
+                            size="sm"
+                            onClick={() => addStock(item.id, 1)}
+                            className="flex-1 text-xs"
+                            title="Add 1 unit"
+                          >
+                            <Plus className="h-3 w-3" />
+                          </Button>
+                          <Button
+                            size="sm"
+                            onClick={() => {
+                              const qty = parseInt(prompt('How many units to add?') || '1');
+                              if (qty > 0) addStock(item.id, qty);
+                            }}
+                            variant="outline"
+                            className="px-2 text-xs"
+                            title="Add custom amount"
+                          >
+                            +#
+                          </Button>
+                        </div>
+                        
+                        <div className="flex gap-1 flex-1">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => useItem(item, 1)}
+                            disabled={item.current_stock === 0}
+                            className="flex-1 text-xs"
+                            title="Use 1 unit"
+                          >
+                            <Minus className="h-3 w-3" />
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => {
+                              const qty = parseInt(prompt('How many units used?') || '1');
+                              if (qty > 0) useItem(item, qty);
+                            }}
+                            disabled={item.current_stock === 0}
+                            className="px-2 text-xs"
+                            title="Use custom amount"
+                          >
+                            -#
+                          </Button>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
