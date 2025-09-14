@@ -97,6 +97,34 @@ const Home = () => {
     }
   };
 
+  const addStock = async (itemId, quantity) => {
+    try {
+      await axios.post(`${API}/inventory/${itemId}/add-stock?quantity=${quantity}`);
+      toast.success(`Added ${quantity} units`);
+      fetchDashboardData();
+    } catch (error) {
+      console.error('Error adding stock:', error);
+      toast.error('Failed to add stock');
+    }
+  };
+
+  const useItem = async (item, quantity) => {
+    try {
+      const usageData = {
+        item_id: item.id,
+        barcode: item.barcode,
+        quantity_used: quantity
+      };
+      
+      await axios.post(`${API}/inventory/${item.id}/use`, usageData);
+      toast.success(`Used ${quantity} units of ${item.name}`);
+      fetchDashboardData();
+    } catch (error) {
+      console.error('Error using item:', error);
+      toast.error(error.response?.data?.detail || 'Failed to record usage');
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
