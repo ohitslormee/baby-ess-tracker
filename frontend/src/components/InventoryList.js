@@ -177,14 +177,6 @@ const InventoryList = () => {
     }
   };
 
-  const handleAddOne = (item) => {
-    addStock(item.id, 1);
-  };
-
-  const handleUseOne = (item) => {
-    useItem(item, 1);
-  };
-
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-8">
