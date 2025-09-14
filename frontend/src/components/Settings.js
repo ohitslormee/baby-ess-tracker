@@ -8,7 +8,7 @@ import { useTheme } from '../contexts/ThemeContext';
 const Settings = () => {
   const { theme, toggleTheme, colors } = useTheme();
 
-  const themeDisplayName = theme === 'baby-blue' ? 'Baby Blue' : 'Baby Pink';
+  const themeDisplayName = theme === 'baby-blue' ? 'Baby Blue' : 'Baby Girl';
   const themeIcon = theme === 'baby-blue' ? Sun : Moon;
   const ThemeIcon = themeIcon;
 
