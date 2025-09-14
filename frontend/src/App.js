@@ -23,13 +23,13 @@ const Navigation = () => {
   const { colors } = useTheme();
   
   return (
-    <nav className={`bg-gradient-to-r ${colors.nav} text-white shadow-lg`}>
+    <nav className={`bg-gradient-to-r ${colors.nav} text-white shadow-lg`} style={{backgroundColor: colors.navHex}}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center py-4">
           <div className="flex items-center space-x-4">
             <span className="text-xl font-bold">Caelestis</span>
           </div>
-          <div className="flex space-x-4">
+          <div className="hidden md:flex space-x-4">
             <Link to="/" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
               Dashboard
             </Link>
@@ -43,6 +43,27 @@ const Navigation = () => {
               Children
             </Link>
             <Link to="/settings" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
+              Settings
+            </Link>
+          </div>
+        </div>
+        
+        {/* Mobile navigation */}
+        <div className="md:hidden pb-4">
+          <div className="flex flex-wrap justify-center gap-2">
+            <Link to="/" className="px-2 py-1 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
+              Dashboard
+            </Link>
+            <Link to="/scan" className="px-2 py-1 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
+              Scan
+            </Link>
+            <Link to="/inventory" className="px-2 py-1 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
+              Inventory
+            </Link>
+            <Link to="/children" className="px-2 py-1 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
+              Children
+            </Link>
+            <Link to="/settings" className="px-2 py-1 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
               Settings
             </Link>
           </div>
