@@ -101,3 +101,74 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+user_problem_statement: "Back to the initial app before standalone, amend to allow quantity change by changing the numbers in addition to the single tap +/- buttons. Editable by clicking on the number. Minimum 0. Apply to both current inventory quantities and usage tracking."
+
+backend:
+  - task: "Update API endpoints to handle direct quantity updates"
+    implemented: false
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Backend API endpoints already support quantity updates through add-stock and use endpoints"
+
+frontend:
+  - task: "Create EditableQuantity component for inline quantity editing"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components/EditableQuantity.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Created reusable EditableQuantity component with click-to-edit functionality, validation, and keyboard shortcuts"
+
+  - task: "Update Dashboard (App.js) to use EditableQuantity for stock quantities"
+    implemented: false
+    working: "NA"
+    file: "/app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Need to replace static quantity display with EditableQuantity component"
+
+  - task: "Update InventoryList to use EditableQuantity for stock quantities"
+    implemented: false
+    working: "NA"
+    file: "/app/frontend/src/components/InventoryList.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Need to replace static quantity display with EditableQuantity component"
+
+metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 0
+  run_ui: false
+
+test_plan:
+  current_focus:
+    - "Create EditableQuantity component for inline quantity editing"
+    - "Update Dashboard (App.js) to use EditableQuantity for stock quantities"
+    - "Update InventoryList to use EditableQuantity for stock quantities"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+  - agent: "main"
+    message: "Created EditableQuantity component. Next: Update App.js and InventoryList.js to implement click-to-edit quantity functionality for both stock quantities and usage tracking."
