@@ -60,7 +60,7 @@ const Home = () => {
     low_stock_items: 0,
     out_of_stock_items: 0
   });
-  const [lowStockItems, setLowStockItems] = useState([]);
+  const [inventoryItems, setInventoryItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -75,15 +75,25 @@ const Home = () => {
       const statsResponse = await axios.get(`${API}/dashboard/stats`);
       setStats(statsResponse.data);
       
-      // Fetch low stock items
-      const lowStockResponse = await axios.get(`${API}/inventory/low-stock`);
-      setLowStockItems(lowStockResponse.data);
+      // Fetch all inventory items for individual cards
+      const inventoryResponse = await axios.get(`${API}/inventory`);
+      setInventoryItems(inventoryResponse.data);
       
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
       toast.error('Failed to load dashboard data');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const getStockStatus = (item) => {
+    if (item.current_stock === 0) {
+      return { text: 'Out of Stock', variant: 'destructive', color: 'text-red-600' };
+    } else if (item.current_stock <= item.min_stock_alert) {
+      return { text: 'Low Stock', variant: 'secondary', color: 'text-orange-600' };
+    } else {
+      return { text: 'In Stock', variant: 'default', color: 'text-green-600' };
     }
   };
 
