@@ -484,7 +484,10 @@ const BarcodeScanner = () => {
               <Button variant="outline" onClick={() => setShowProductDialog(false)}>
                 Cancel
               </Button>
-              <Button onClick={createNewItem} disabled={!productForm.name}>
+              <Button
+                onClick={() => setShowAddDialog(true)}
+                className={`${colors.button} text-white`}
+              >
                 <CheckCircle2 className="h-4 w-4 mr-2" />
                 Add Item
               </Button>
