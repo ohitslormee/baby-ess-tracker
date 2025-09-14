@@ -397,49 +397,24 @@ const InventoryList = () => {
                     </div>
                     
                     <div className="flex gap-2 pt-2">
-                      <div className="flex gap-1 flex-1">
-                        <Button
-                          size="sm"
-                          onClick={() => handleAddOne(item)}
-                          className="flex-1 text-xs"
-                          title="Add 1 unit"
-                        >
-                          <Plus className="h-3 w-3" />
-                        </Button>
-                        <Button
-                          size="sm"
-                          onClick={() => handleQuickAdd(item)}
-                          variant="outline"
-                          className="px-2 text-xs"
-                          title="Add custom amount"
-                        >
-                          +#
-                        </Button>
-                      </div>
-                      
-                      <div className="flex gap-1 flex-1">
-                        <Button
-                          size="sm"
-                          onClick={() => handleUseOne(item)}
-                          variant="outline"
-                          disabled={item.current_stock === 0}
-                          className="flex-1 text-xs"
-                          title="Use 1 unit"
-                        >
-                          <Minus className="h-3 w-3" />
-                        </Button>
-                        <Button
-                          size="sm"
-                          onClick={() => handleQuickUse(item)}
-                          variant="outline"
-                          disabled={item.current_stock === 0}
-                          className="px-2 text-xs"
-                          title="Use custom amount"
-                        >
-                          -#
-                        </Button>
-                      </div>
-                      
+                      <Button
+                        size="sm"
+                        onClick={() => handleQuickAdd(item)}
+                        className="flex-1"
+                      >
+                        <Plus className="h-4 w-4 mr-1" />
+                        Add
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleQuickUse(item)}
+                        disabled={item.current_stock === 0}
+                        className="flex-1"
+                      >
+                        <Minus className="h-4 w-4 mr-1" />
+                        Use
+                      </Button>
                       <Button
                         size="sm"
                         variant="outline"
@@ -447,8 +422,6 @@ const InventoryList = () => {
                           setEditingItem(item);
                           setShowEditDialog(true);
                         }}
-                        className="px-2"
-                        title="Edit item details"
                       >
                         <Edit className="h-4 w-4" />
                       </Button>
