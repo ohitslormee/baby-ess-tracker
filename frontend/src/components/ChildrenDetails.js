@@ -159,8 +159,8 @@ const ChildrenDetails = () => {
         <div className="mb-8">
           <div className="flex justify-between items-start">
             <div>
-              <h1 className="text-4xl font-bold text-gray-900 mb-2">Children Details</h1>
-              <p className="text-gray-600 text-lg">Manage your children's information and milestones</p>
+              <h1 className="text-4xl font-bold text-gray-900 mb-2">Child Details</h1>
+              <p className="text-gray-600 text-lg">Manage your child's information and milestones</p>
             </div>
             <Button
               onClick={() => setShowAddDialog(true)}
