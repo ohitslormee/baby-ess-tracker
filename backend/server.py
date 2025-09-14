@@ -339,7 +339,7 @@ async def get_dashboard_stats():
         "out_of_stock_items": out_of_stock_count
     }
 
-# Children management endpoints
+# Child management endpoints
 @api_router.post("/children", response_model=Child)
 async def create_child(child: ChildCreate):
     """Create a new child record"""
