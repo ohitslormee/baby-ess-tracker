@@ -12,8 +12,8 @@ export const useTheme = () => {
 
 export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(() => {
-    // Get theme from localStorage or default to baby-blue
-    return localStorage.getItem('caelestis-theme') || 'baby-blue';
+    // Get theme from localStorage or default to baby-girl
+    return localStorage.getItem('caelestis-theme') || 'baby-girl';
   });
 
   useEffect(() => {
@@ -25,36 +25,38 @@ export const ThemeProvider = ({ children }) => {
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === 'baby-blue' ? 'baby-pink' : 'baby-blue');
+    setTheme(prevTheme => prevTheme === 'baby-blue' ? 'baby-girl' : 'baby-blue');
   };
 
   const getThemeColors = () => {
-    if (theme === 'baby-pink') {
+    if (theme === 'baby-girl') {
       return {
-        primary: 'from-pink-400 to-rose-500',
-        primaryHover: 'from-pink-500 to-rose-600',
-        primaryBg: 'bg-pink-500',
+        primary: 'from-pink-300 to-pink-400',
+        primaryHover: 'from-pink-400 to-pink-500',
+        primaryBg: 'bg-pink-400',
         primaryText: 'text-pink-600',
         primaryLight: 'bg-pink-50',
         primaryBorder: 'border-pink-200',
         accent: 'bg-pink-100 text-pink-800',
         card: 'bg-pink-50',
-        button: 'bg-pink-500 hover:bg-pink-600',
-        nav: 'from-pink-500 to-rose-500'
+        button: 'bg-pink-400 hover:bg-pink-500',
+        nav: 'from-pink-300 to-pink-400',
+        navHex: '#FDD5DF'
       };
     }
-    // Default baby-blue theme
+    // Baby blue theme
     return {
-      primary: 'from-blue-400 to-cyan-500',
-      primaryHover: 'from-blue-500 to-cyan-600',
-      primaryBg: 'bg-blue-500',
+      primary: 'from-blue-300 to-blue-400',
+      primaryHover: 'from-blue-400 to-blue-500',
+      primaryBg: 'bg-blue-400',
       primaryText: 'text-blue-600',
       primaryLight: 'bg-blue-50',
       primaryBorder: 'border-blue-200',
       accent: 'bg-blue-100 text-blue-800',
       card: 'bg-blue-50',
-      button: 'bg-blue-500 hover:bg-blue-600',
-      nav: 'from-blue-500 to-cyan-500'
+      button: 'bg-blue-400 hover:bg-blue-500',
+      nav: 'from-blue-300 to-blue-400',
+      navHex: '#89CFF0'
     };
   };
 
