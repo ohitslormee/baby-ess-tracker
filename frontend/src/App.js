@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import axios from 'axios';
-import { Package, Scan, TrendingDown, AlertTriangle, Plus, Minus, Search } from 'lucide-react';
+import { Package, Scan, TrendingDown, AlertTriangle, Plus, Minus, Search, Baby, Settings as SettingsIcon } from 'lucide-react';
+import { ThemeProvider, useTheme } from './contexts/ThemeContext';
 import BarcodeScanner from './components/BarcodeScanner';
 import InventoryDashboard from './components/InventoryDashboard';
 import InventoryList from './components/InventoryList';
+import ChildrenDetails from './components/ChildrenDetails';
+import Settings from './components/Settings';
 import { Button } from './components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './components/ui/card';
 import { Badge } from './components/ui/badge';
@@ -17,23 +20,30 @@ const API = `${BACKEND_URL}/api`;
 
 // Navigation component
 const Navigation = () => {
+  const { colors } = useTheme();
+  
   return (
-    <nav className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg">
+    <nav className={`bg-gradient-to-r ${colors.nav} text-white shadow-lg`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-4">
-            <Package className="h-8 w-8" />
-            <span className="text-xl font-bold">Baby ERP</span>
+            <span className="text-xl font-bold">Caelestis</span>
           </div>
           <div className="flex space-x-4">
-            <Link to="/" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-emerald-700 transition-colors">
+            <Link to="/" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
               Dashboard
             </Link>
-            <Link to="/scan" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-emerald-700 transition-colors">
+            <Link to="/scan" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
               Scan
             </Link>
-            <Link to="/inventory" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-emerald-700 transition-colors">
+            <Link to="/inventory" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
               Inventory
+            </Link>
+            <Link to="/children" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
+              Children
+            </Link>
+            <Link to="/settings" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
+              Settings
             </Link>
           </div>
         </div>
@@ -44,6 +54,7 @@ const Navigation = () => {
 
 // Home/Dashboard component
 const Home = () => {
+  const { colors } = useTheme();
   const [stats, setStats] = useState({
     total_items: 0,
     low_stock_items: 0,
@@ -79,7 +90,7 @@ const Home = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-emerald-600"></div>
+        <div className={`animate-spin rounded-full h-32 w-32 border-b-2 ${colors.primaryBorder}`}></div>
       </div>
     );
   }
@@ -88,7 +99,7 @@ const Home = () => {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
       <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Baby Supply Dashboard</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">Supply Dashboard</h1>
           <p className="text-gray-600 text-lg">Track your baby essentials with smart inventory management</p>
         </div>
 
@@ -97,7 +108,7 @@ const Home = () => {
           <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-gray-600">Total Items</CardTitle>
-              <Package className="h-4 w-4 text-emerald-600" />
+              <Package className={`h-4 w-4 ${colors.primaryText}`} />
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold text-gray-900">{stats.total_items}</div>
@@ -131,26 +142,38 @@ const Home = () => {
         {/* Quick Actions */}
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Quick Actions</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Link to="/scan">
-              <Card className="bg-emerald-50 border-emerald-200 hover:bg-emerald-100 cursor-pointer transition-colors h-full">
+              <Card className={`${colors.card} ${colors.primaryBorder} hover:bg-opacity-80 cursor-pointer transition-colors h-full`}>
                 <CardContent className="flex items-center justify-center p-8">
                   <div className="text-center">
-                    <Scan className="h-12 w-12 text-emerald-600 mx-auto mb-4" />
-                    <h3 className="text-lg font-semibold text-emerald-800">Scan Barcode</h3>
-                    <p className="text-emerald-600">Add new items or record usage</p>
+                    <Scan className={`h-12 w-12 ${colors.primaryText} mx-auto mb-4`} />
+                    <h3 className={`text-lg font-semibold ${colors.primaryText.replace('text-', 'text-').replace('-600', '-800')}`}>Scan Barcode</h3>
+                    <p className={colors.primaryText}>Add new items or record usage</p>
                   </div>
                 </CardContent>
               </Card>
             </Link>
             
             <Link to="/inventory">
-              <Card className="bg-blue-50 border-blue-200 hover:bg-blue-100 cursor-pointer transition-colors h-full">
+              <Card className={`${colors.card} ${colors.primaryBorder} hover:bg-opacity-80 cursor-pointer transition-colors h-full`}>
                 <CardContent className="flex items-center justify-center p-8">
                   <div className="text-center">
-                    <Search className="h-12 w-12 text-blue-600 mx-auto mb-4" />
-                    <h3 className="text-lg font-semibold text-blue-800">View Inventory</h3>
-                    <p className="text-blue-600">Browse and manage all items</p>
+                    <Search className={`h-12 w-12 ${colors.primaryText} mx-auto mb-4`} />
+                    <h3 className={`text-lg font-semibold ${colors.primaryText.replace('text-', 'text-').replace('-600', '-800')}`}>View Inventory</h3>
+                    <p className={colors.primaryText}>Browse and manage all items</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+
+            <Link to="/children">
+              <Card className={`${colors.card} ${colors.primaryBorder} hover:bg-opacity-80 cursor-pointer transition-colors h-full`}>
+                <CardContent className="flex items-center justify-center p-8">
+                  <div className="text-center">
+                    <Baby className={`h-12 w-12 ${colors.primaryText} mx-auto mb-4`} />
+                    <h3 className={`text-lg font-semibold ${colors.primaryText.replace('text-', 'text-').replace('-600', '-800')}`}>Children Details</h3>
+                    <p className={colors.primaryText}>Manage children information</p>
                   </div>
                 </CardContent>
               </Card>
@@ -201,8 +224,8 @@ const Home = () => {
   );
 };
 
-// Main App component
-function App() {
+// Main App component with ThemeProvider wrapper
+const AppContent = () => {
   return (
     <div className="App">
       <BrowserRouter>
@@ -212,10 +235,20 @@ function App() {
           <Route path="/scan" element={<BarcodeScanner />} />
           <Route path="/inventory" element={<InventoryList />} />
           <Route path="/dashboard" element={<InventoryDashboard />} />
+          <Route path="/children" element={<ChildrenDetails />} />
+          <Route path="/settings" element={<Settings />} />
         </Routes>
       </BrowserRouter>
       <Toaster position="top-right" />
     </div>
+  );
+};
+
+function App() {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
   );
 }
 
