@@ -154,6 +154,19 @@ const Home = () => {
     }
   };
 
+  const updateStock = async (item, newStock) => {
+    try {
+      await axios.put(`${API}/inventory/${item.id}`, {
+        current_stock: newStock
+      });
+      toast.success(`Stock updated to ${newStock} units`);
+      fetchDashboardData();
+    } catch (error) {
+      console.error('Error updating stock:', error);
+      toast.error('Failed to update stock');
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
