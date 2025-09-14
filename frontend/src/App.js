@@ -8,6 +8,7 @@ import InventoryDashboard from './components/InventoryDashboard';
 import InventoryList from './components/InventoryList';
 import ChildrenDetails from './components/ChildrenDetails';
 import Settings from './components/Settings';
+import EditableQuantity from './components/EditableQuantity';
 import { Button } from './components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './components/ui/card';
 import { Badge } from './components/ui/badge';
