@@ -1,0 +1,1656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caelestis - Baby Supply Management</title>
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/minified/html5-qrcode.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rubik', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(to bottom right, #f8fafc, #e2e8f0);
+            min-height: 100vh;
+        }
+
+        /* Theme Variables */
+        :root {
+            --baby-girl-primary: #FDD5DF;
+            --baby-girl-secondary: #FCB6C8;
+            --baby-blue-primary: #89CFF0;
+            --baby-blue-secondary: #6FB8E8;
+        }
+
+        .theme-baby-girl {
+            --primary-color: var(--baby-girl-primary);
+            --secondary-color: var(--baby-girl-secondary);
+            --primary-text: #be185d;
+            --primary-bg: #fdf2f8;
+            --primary-border: #f9a8d4;
+        }
+
+        .theme-baby-blue {
+            --primary-color: var(--baby-blue-primary);
+            --secondary-color: var(--baby-blue-secondary);
+            --primary-text: #0284c7;
+            --primary-bg: #f0f9ff;
+            --primary-border: #7dd3fc;
+        }
+
+        /* Navigation */
+        .nav {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .logo-container {
+            text-align: center;
+            padding: 0.5rem 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .logo-sub {
+            font-size: 0.75rem;
+            opacity: 0.8;
+            font-style: italic;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            padding: 0.5rem 0;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+        }
+
+        .nav-link {
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            text-decoration: none;
+            color: white;
+            font-size: 1rem;
+            font-weight: 500;
+            white-space: nowrap;
+            transition: background-color 0.2s;
+            cursor: pointer;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+        }
+
+        .card-header {
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-subtitle {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        /* Grid Layouts */
+        .grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .grid-cols-1 { grid-template-columns: repeat(1, 1fr); }
+        .grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+        .grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+
+        @media (min-width: 768px) {
+            .md\\:grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+            .md\\:grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+            .md\\:grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-text);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+
+        .btn-sm {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.75rem;
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .label {
+            display: block;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .input, .select {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+        }
+
+        .input:focus, .select:focus {
+            outline: none;
+            border-color: var(--primary-text);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        /* Stats Display */
+        .stat-card {
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        /* Status Badges */
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .badge-success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-warning {
+            background: #fed7aa;
+            color: #9a3412;
+        }
+
+        .badge-danger {
+            background: #fecaca;
+            color: #991b1b;
+        }
+
+        /* Scanner */
+        .scanner-container {
+            background: #000;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .quick-action {
+            background: var(--primary-bg);
+            border: 2px solid var(--primary-border);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .quick-action:hover {
+            background: rgba(var(--primary-color), 0.1);
+            transform: translateY(-2px);
+        }
+
+        .quick-action-icon {
+            font-size: 3rem;
+            color: var(--primary-text);
+            margin-bottom: 1rem;
+        }
+
+        .quick-action-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--primary-text);
+            margin-bottom: 0.5rem;
+        }
+
+        .quick-action-desc {
+            color: var(--primary-text);
+            font-size: 0.875rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                font-size: 0.875rem;
+                gap: 0.5rem;
+            }
+            
+            .nav-link {
+                padding: 0.375rem 0.75rem;
+            }
+            
+            .main-content {
+                padding: 1rem;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Theme Previews */
+        .theme-preview {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .theme-preview:hover {
+            border-color: var(--primary-border);
+        }
+
+        .theme-preview.active {
+            border-color: var(--primary-text);
+            background: var(--primary-bg);
+        }
+
+        .theme-color-box {
+            width: 1rem;
+            height: 1rem;
+            border-radius: 0.25rem;
+        }
+    </style>
+</head>
+<body class="theme-baby-girl">
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="logo-container">
+                <div class="logo">CAELESTIS</div>
+                <div class="logo-sub">la maison</div>
+            </div>
+            <div class="nav-links">
+                <a href="#" class="nav-link active" onclick="showPage('dashboard')">Dashboard</a>
+                <a href="#" class="nav-link" onclick="showPage('scan')">Scan</a>
+                <a href="#" class="nav-link" onclick="showPage('inventory')">Inventory</a>
+                <a href="#" class="nav-link" onclick="showPage('children')">Child</a>
+                <a href="#" class="nav-link" onclick="showPage('settings')">Settings</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Dashboard Page -->
+        <div id="dashboard" class="page active fade-in">
+            <div class="card-header">
+                <h1 class="card-title" style="font-size: 2.25rem; margin-bottom: 0.5rem;">Supply Dashboard</h1>
+                <p class="card-subtitle" style="font-size: 1.125rem;">Track your baby essentials with smart inventory management</p>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <a href="#" class="quick-action" onclick="showPage('scan')">
+                    <div class="quick-action-icon">📷</div>
+                    <div class="quick-action-title">Scan Barcode</div>
+                    <div class="quick-action-desc">Add new items or record usage</div>
+                </a>
+                <a href="#" class="quick-action" onclick="showPage('inventory')">
+                    <div class="quick-action-icon">📦</div>
+                    <div class="quick-action-title">View Inventory</div>
+                    <div class="quick-action-desc">Browse and manage all items</div>
+                </a>
+                <a href="#" class="quick-action" onclick="showPage('children')">
+                    <div class="quick-action-icon">👶</div>
+                    <div class="quick-action-title">Child Details</div>
+                    <div class="quick-action-desc">Manage child information</div>
+                </a>
+            </div>
+
+            <!-- Inventory Items -->
+            <div id="inventory-dashboard" class="grid md:grid-cols-3">
+                <!-- Items will be populated by JavaScript -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="dashboard-empty" class="card" style="text-align: center; padding: 3rem;">
+                <div style="font-size: 4rem; margin-bottom: 1rem;">📦</div>
+                <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">No items in inventory</h3>
+                <p style="color: #6b7280; margin-bottom: 1rem;">Start by scanning some barcodes to add items to your inventory.</p>
+                <button class="btn btn-primary" onclick="showPage('scan')">
+                    📷 Start Scanning
+                </button>
+            </div>
+        </div>
+
+        <!-- Scan Page -->
+        <div id="scan" class="page">
+            <div class="card-header">
+                <h1 class="card-title" style="font-size: 2.25rem; margin-bottom: 0.5rem;">Barcode Scanner</h1>
+                <p class="card-subtitle" style="font-size: 1.125rem;">Scan barcodes to add items or record usage</p>
+            </div>
+
+            <!-- Scan Mode Selection -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Scan Mode</h2>
+                    <p class="card-subtitle">Choose what happens when you scan a barcode</p>
+                </div>
+                <div class="grid md:grid-cols-3" style="gap: 1rem;">
+                    <button class="btn btn-primary scan-mode-btn active" data-mode="detect" onclick="setScanMode('detect')">
+                        📦 Auto Detect
+                    </button>
+                    <button class="btn btn-secondary scan-mode-btn" data-mode="add" onclick="setScanMode('add')">
+                        ➕ Add Stock
+                    </button>
+                    <button class="btn btn-secondary scan-mode-btn" data-mode="use" onclick="setScanMode('use')">
+                        ➖ Use Item
+                    </button>
+                </div>
+                <div style="margin-top: 1rem;">
+                    <span class="badge badge-success" id="current-mode">Current Mode: Auto Detect</span>
+                </div>
+            </div>
+
+            <!-- Scanner -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Camera Scanner</h2>
+                </div>
+                <div id="scanner-content">
+                    <div style="text-align: center; padding: 2rem;">
+                        <div style="font-size: 4rem; margin-bottom: 1rem;">📷</div>
+                        <p style="color: #6b7280; margin-bottom: 1rem;">Ready to scan barcodes</p>
+                        <button class="btn btn-primary" onclick="startScanner()">
+                            📷 Start Camera
+                        </button>
+                    </div>
+                </div>
+                <div id="scanner-container" class="scanner-container hidden">
+                    <div id="reader"></div>
+                    <div style="text-align: center; padding: 1rem;">
+                        <button class="btn btn-secondary" onclick="stopScanner()">
+                            ❌ Stop Scanner
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Manual Entry -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Manual Entry</h2>
+                    <p class="card-subtitle">Enter barcode manually if camera scanning doesn't work</p>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <input type="text" id="manual-barcode" class="input" placeholder="Enter barcode number" style="flex: 1;">
+                    <button class="btn btn-primary" onclick="processManualBarcode()">
+                        🔍 Process
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inventory Page -->
+        <div id="inventory" class="page">
+            <div class="card-header">
+                <h1 class="card-title" style="font-size: 2.25rem; margin-bottom: 0.5rem;">Inventory Management</h1>
+                <p class="card-subtitle" style="font-size: 1.125rem;">Manage your baby supplies inventory</p>
+            </div>
+
+            <!-- Search and Filters -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Search & Filter</h2>
+                </div>
+                <div class="grid md:grid-cols-4" style="gap: 1rem;">
+                    <div class="form-group">
+                        <label class="label">Search</label>
+                        <input type="text" id="search-input" class="input" placeholder="Search items..." onkeyup="filterInventory()">
+                    </div>
+                    <div class="form-group">
+                        <label class="label">Category</label>
+                        <select id="category-filter" class="select" onchange="filterInventory()">
+                            <option value="">All Categories</option>
+                            <option value="Diapers">Diapers</option>
+                            <option value="Wet Wipes">Wet Wipes</option>
+                            <option value="Food & Formula">Food & Formula</option>
+                            <option value="Bath & Care">Bath & Care</option>
+                            <option value="Medicine & Health">Medicine & Health</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="label">Stock Level</label>
+                        <select id="stock-filter" class="select" onchange="filterInventory()">
+                            <option value="">All Items</option>
+                            <option value="good">In Stock</option>
+                            <option value="low">Low Stock</option>
+                            <option value="out">Out of Stock</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="label" style="visibility: hidden;">Action</label>
+                        <button class="btn btn-secondary" onclick="clearFilters()" style="width: 100%;">
+                            Clear Filters
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inventory Grid -->
+            <div id="inventory-grid" class="grid md:grid-cols-3">
+                <!-- Items will be populated by JavaScript -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="inventory-empty" class="card" style="text-align: center; padding: 3rem;">
+                <div style="font-size: 4rem; margin-bottom: 1rem;">📦</div>
+                <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">No items found</h3>
+                <p style="color: #6b7280; margin-bottom: 1rem;">Try adjusting your filters or scan some barcodes to add items.</p>
+                <button class="btn btn-primary" onclick="showPage('scan')">
+                    📷 Start Scanning
+                </button>
+            </div>
+        </div>
+
+        <!-- Children Page -->
+        <div id="children" class="page">
+            <div class="card-header" style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div>
+                    <h1 class="card-title" style="font-size: 2.25rem; margin-bottom: 0.5rem;">Child Details</h1>
+                    <p class="card-subtitle" style="font-size: 1.125rem;">Manage your child's information and milestones</p>
+                </div>
+                <button class="btn btn-primary" onclick="showAddChildModal()">
+                    ➕ Add Child
+                </button>
+            </div>
+
+            <!-- Children Grid -->
+            <div id="children-grid" class="grid md:grid-cols-3">
+                <!-- Children will be populated by JavaScript -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="children-empty" class="card" style="text-align: center; padding: 3rem;">
+                <div style="font-size: 4rem; margin-bottom: 1rem;">👶</div>
+                <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">No child added yet</h3>
+                <p style="color: #6b7280; margin-bottom: 1rem;">Start by adding your child's details to track their growth and milestones.</p>
+                <button class="btn btn-primary" onclick="showAddChildModal()">
+                    ➕ Add Your First Child
+                </button>
+            </div>
+        </div>
+
+        <!-- Settings Page -->
+        <div id="settings" class="page">
+            <div class="card-header">
+                <h1 class="card-title" style="font-size: 2.25rem; margin-bottom: 0.5rem;">Settings</h1>
+                <p class="card-subtitle" style="font-size: 1.125rem;">Customize your Caelestis experience</p>
+            </div>
+
+            <!-- Theme Settings -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">🎨 Theme Settings</h2>
+                    <p class="card-subtitle">Choose your preferred color theme</p>
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <div>
+                            <h3 style="font-size: 1.125rem; font-weight: 500; margin-bottom: 0.25rem;">Current Theme</h3>
+                            <p style="color: #6b7280; font-size: 0.875rem;">Switch between baby blue and baby girl themes</p>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <span class="badge badge-success" id="current-theme">Baby Girl</span>
+                            <button class="btn btn-primary" onclick="toggleTheme()">Switch Theme</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Theme Previews -->
+                <div class="grid md:grid-cols-2" style="gap: 1rem;">
+                    <div class="theme-preview" id="theme-blue-preview" onclick="setTheme('baby-blue')">
+                        <div class="theme-color-box" style="background-color: #89CFF0;"></div>
+                        <div>
+                            <div style="font-weight: 500; color: #0284c7;">Baby Blue Theme</div>
+                            <div style="font-size: 0.875rem; color: #0284c7;">Calming blue tones perfect for a peaceful nursery</div>
+                        </div>
+                    </div>
+                    <div class="theme-preview active" id="theme-girl-preview" onclick="setTheme('baby-girl')">
+                        <div class="theme-color-box" style="background-color: #FDD5DF;"></div>
+                        <div>
+                            <div style="font-weight: 500; color: #be185d;">Baby Girl Theme</div>
+                            <div style="font-size: 0.875rem; color: #be185d;">Warm pink tones creating a cozy atmosphere</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Management -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">💾 Data Management</h2>
+                    <p class="card-subtitle">Manage your app data</p>
+                </div>
+                <div class="grid md:grid-cols-3" style="gap: 1rem;">
+                    <button class="btn btn-secondary" onclick="exportData()">
+                        📤 Export Data
+                    </button>
+                    <button class="btn btn-secondary" onclick="importData()">
+                        📥 Import Data
+                    </button>
+                    <button class="btn btn-secondary" onclick="clearAllData()" style="color: #dc2626;">
+                        🗑️ Clear All Data
+                    </button>
+                </div>
+            </div>
+
+            <!-- App Information -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">ℹ️ App Information</h2>
+                </div>
+                <div style="display: grid; gap: 0.75rem;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="color: #6b7280;">App Name</span>
+                        <span style="font-weight: 500;">Caelestis</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="color: #6b7280;">Version</span>
+                        <span style="font-weight: 500;">1.0.0 Standalone</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="color: #6b7280;">Storage</span>
+                        <span style="font-weight: 500;">Local Browser Storage</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="color: #6b7280;">Items Stored</span>
+                        <span style="font-weight: 500;" id="items-count">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Item Modal -->
+    <div id="item-modal" class="modal">
+        <div class="modal-content">
+            <div class="card-header">
+                <h2 class="card-title" id="item-modal-title">Add New Item</h2>
+                <p class="card-subtitle" id="item-modal-subtitle">Enter item details</p>
+            </div>
+            <form id="item-form">
+                <div class="form-group">
+                    <label class="label">Product Name *</label>
+                    <input type="text" id="item-name" class="input" required>
+                </div>
+                <div class="grid md:grid-cols-2" style="gap: 1rem;">
+                    <div class="form-group">
+                        <label class="label">Category</label>
+                        <select id="item-category" class="select">
+                            <option value="Diapers">Diapers</option>
+                            <option value="Wet Wipes">Wet Wipes</option>
+                            <option value="Food & Formula">Food & Formula</option>
+                            <option value="Bath & Care">Bath & Care</option>
+                            <option value="Medicine & Health">Medicine & Health</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="label">Unit Type</label>
+                        <select id="item-unit" class="select">
+                            <option value="pieces">pieces</option>
+                            <option value="bottles">bottles</option>
+                            <option value="packs">packs</option>
+                            <option value="boxes">boxes</option>
+                            <option value="tubes">tubes</option>
+                            <option value="jars">jars</option>
+                            <option value="cans">cans</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-2" style="gap: 1rem;">
+                    <div class="form-group">
+                        <label class="label">Brand</label>
+                        <input type="text" id="item-brand" class="input">
+                    </div>
+                    <div class="form-group">
+                        <label class="label">Size</label>
+                        <input type="text" id="item-size" class="input">
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-2" style="gap: 1rem;">
+                    <div class="form-group">
+                        <label class="label">Current Stock</label>
+                        <input type="number" id="item-stock" class="input" min="0" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label class="label">Low Stock Alert</label>
+                        <input type="number" id="item-alert" class="input" min="0" value="5">
+                    </div>
+                </div>
+                <input type="hidden" id="item-barcode">
+                <input type="hidden" id="item-id">
+                <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem;">
+                    <button type="button" class="btn btn-secondary" onclick="closeItemModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Item</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add/Edit Child Modal -->
+    <div id="child-modal" class="modal">
+        <div class="modal-content">
+            <div class="card-header">
+                <h2 class="card-title" id="child-modal-title">Add Child</h2>
+                <p class="card-subtitle" id="child-modal-subtitle">Add your child's details</p>
+            </div>
+            <form id="child-form">
+                <div class="form-group">
+                    <label class="label">Name *</label>
+                    <input type="text" id="child-name" class="input" required>
+                </div>
+                <div class="form-group">
+                    <label class="label">Date of Birth *</label>
+                    <input type="date" id="child-dob" class="input" required>
+                </div>
+                <div class="form-group">
+                    <label class="label">Gender</label>
+                    <select id="child-gender" class="select">
+                        <option value="">Select gender</option>
+                        <option value="Boy">Boy</option>
+                        <option value="Girl">Girl</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="grid md:grid-cols-2" style="gap: 1rem;">
+                    <div class="form-group">
+                        <label class="label">Height (cm)</label>
+                        <input type="number" id="child-height" class="input" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label class="label">Weight (kg)</label>
+                        <input type="number" id="child-weight" class="input" step="0.1">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="label">Notes</label>
+                    <input type="text" id="child-notes" class="input" placeholder="Additional notes (optional)">
+                </div>
+                <input type="hidden" id="child-id">
+                <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem;">
+                    <button type="button" class="btn btn-secondary" onclick="closeChildModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Child</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast" style="position: fixed; top: 20px; right: 20px; z-index: 1001; display: none;">
+        <div style="background: #10b981; color: white; padding: 1rem 1.5rem; border-radius: 0.5rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);">
+            <span id="toast-message"></span>
+        </div>
+    </div>
+
+    <script>
+        // Global Variables
+        let currentPage = 'dashboard';
+        let currentTheme = localStorage.getItem('caelestis-theme') || 'baby-girl';
+        let scanMode = 'detect';
+        let html5QrCode = null;
+        let isScanning = false;
+
+        // Data Storage
+        class DataManager {
+            static getItems() {
+                return JSON.parse(localStorage.getItem('caelestis-items') || '[]');
+            }
+
+            static setItems(items) {
+                localStorage.setItem('caelestis-items', JSON.stringify(items));
+            }
+
+            static getChildren() {
+                return JSON.parse(localStorage.getItem('caelestis-children') || '[]');
+            }
+
+            static setChildren(children) {
+                localStorage.setItem('caelestis-children', JSON.stringify(children));
+            }
+
+            static addItem(item) {
+                const items = this.getItems();
+                item.id = Date.now().toString();
+                item.created_at = new Date().toISOString();
+                item.updated_at = new Date().toISOString();
+                items.push(item);
+                this.setItems(items);
+                return item;
+            }
+
+            static updateItem(id, updates) {
+                const items = this.getItems();
+                const index = items.findIndex(item => item.id === id);
+                if (index !== -1) {
+                    items[index] = { ...items[index], ...updates, updated_at: new Date().toISOString() };
+                    this.setItems(items);
+                    return items[index];
+                }
+                return null;
+            }
+
+            static deleteItem(id) {
+                const items = this.getItems();
+                const filtered = items.filter(item => item.id !== id);
+                this.setItems(filtered);
+                return filtered.length !== items.length;
+            }
+
+            static addChild(child) {
+                const children = this.getChildren();
+                child.id = Date.now().toString();
+                child.created_at = new Date().toISOString();
+                child.updated_at = new Date().toISOString();
+                children.push(child);
+                this.setChildren(children);
+                return child;
+            }
+
+            static updateChild(id, updates) {
+                const children = this.getChildren();
+                const index = children.findIndex(child => child.id === id);
+                if (index !== -1) {
+                    children[index] = { ...children[index], ...updates, updated_at: new Date().toISOString() };
+                    this.setChildren(children);
+                    return children[index];
+                }
+                return null;
+            }
+
+            static deleteChild(id) {
+                const children = this.getChildren();
+                const filtered = children.filter(child => child.id !== id);
+                this.setChildren(filtered);
+                return filtered.length !== children.length;
+            }
+        }
+
+        // Utility Functions
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            toastMessage.textContent = message;
+            toast.style.display = 'block';
+            
+            // Change color based on type
+            const toastDiv = toast.querySelector('div');
+            if (type === 'error') {
+                toastDiv.style.background = '#ef4444';
+            } else if (type === 'warning') {
+                toastDiv.style.background = '#f59e0b';
+            } else {
+                toastDiv.style.background = '#10b981';
+            }
+            
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }
+
+        function calculateAge(dateOfBirth) {
+            const today = new Date();
+            const birthDate = new Date(dateOfBirth);
+            
+            let years = today.getFullYear() - birthDate.getFullYear();
+            let months = today.getMonth() - birthDate.getMonth();
+            let days = today.getDate() - birthDate.getDate();
+
+            if (days < 0) {
+                months--;
+                days += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+            }
+            
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
+
+            if (years > 0) {
+                return `${years} year${years > 1 ? 's' : ''} ${months} month${months !== 1 ? 's' : ''}`;
+            } else if (months > 0) {
+                return `${months} month${months > 1 ? 's' : ''} ${days} day${days !== 1 ? 's' : ''}`;
+            } else {
+                return `${days} day${days !== 1 ? 's' : ''}`;
+            }
+        }
+
+        function getStockStatus(item) {
+            if (item.current_stock === 0) {
+                return { text: 'Out of Stock', class: 'badge-danger', color: '#dc2626' };
+            } else if (item.current_stock <= item.min_stock_alert) {
+                return { text: 'Low Stock', class: 'badge-warning', color: '#f59e0b' };
+            } else {
+                return { text: 'In Stock', class: 'badge-success', color: '#10b981' };
+            }
+        }
+
+        // Navigation Functions
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Update navigation
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.querySelector(`[onclick="showPage('${pageId}')"]`).classList.add('active');
+            
+            currentPage = pageId;
+            
+            // Load page data
+            if (pageId === 'dashboard') {
+                loadDashboard();
+            } else if (pageId === 'inventory') {
+                loadInventory();
+            } else if (pageId === 'children') {
+                loadChildren();
+            } else if (pageId === 'settings') {
+                updateItemsCount();
+            }
+        }
+
+        // Theme Functions
+        function setTheme(theme) {
+            currentTheme = theme;
+            document.body.className = `theme-${theme}`;
+            localStorage.setItem('caelestis-theme', theme);
+            
+            // Update theme indicators
+            document.getElementById('current-theme').textContent = theme === 'baby-blue' ? 'Baby Blue' : 'Baby Girl';
+            
+            // Update theme previews
+            document.querySelectorAll('.theme-preview').forEach(preview => {
+                preview.classList.remove('active');
+            });
+            
+            if (theme === 'baby-blue') {
+                document.getElementById('theme-blue-preview').classList.add('active');
+            } else {
+                document.getElementById('theme-girl-preview').classList.add('active');
+            }
+        }
+
+        function toggleTheme() {
+            const newTheme = currentTheme === 'baby-blue' ? 'baby-girl' : 'baby-blue';
+            setTheme(newTheme);
+            showToast(`Switched to ${newTheme === 'baby-blue' ? 'Baby Blue' : 'Baby Girl'} theme`);
+        }
+
+        // Scanner Functions
+        function setScanMode(mode) {
+            scanMode = mode;
+            
+            // Update buttons
+            document.querySelectorAll('.scan-mode-btn').forEach(btn => {
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-secondary');
+            });
+            document.querySelector(`[data-mode="${mode}"]`).classList.remove('btn-secondary');
+            document.querySelector(`[data-mode="${mode}"]`).classList.add('btn-primary');
+            
+            // Update current mode display
+            const modeText = mode === 'add' ? 'Add Stock' : mode === 'use' ? 'Use Item' : 'Auto Detect';
+            document.getElementById('current-mode').textContent = `Current Mode: ${modeText}`;
+        }
+
+        function startScanner() {
+            if (isScanning) return;
+            
+            const scannerContent = document.getElementById('scanner-content');
+            const scannerContainer = document.getElementById('scanner-container');
+            
+            scannerContent.classList.add('hidden');
+            scannerContainer.classList.remove('hidden');
+            
+            html5QrCode = new Html5Qrcode("reader");
+            isScanning = true;
+            
+            const config = {
+                fps: 10,
+                qrbox: { width: 250, height: 150 },
+                aspectRatio: 1.5
+            };
+            
+            html5QrCode.start(
+                { facingMode: "environment" },
+                config,
+                (decodedText) => {
+                    processBarcode(decodedText);
+                    stopScanner();
+                },
+                (errorMessage) => {
+                    // Ignore scan failures
+                }
+            ).catch(err => {
+                showToast('Unable to start camera. Please check permissions.', 'error');
+                stopScanner();
+            });
+        }
+
+        function stopScanner() {
+            if (html5QrCode && isScanning) {
+                html5QrCode.stop().then(() => {
+                    html5QrCode.clear();
+                }).catch(err => {
+                    console.error('Error stopping scanner:', err);
+                });
+            }
+            
+            const scannerContent = document.getElementById('scanner-content');
+            const scannerContainer = document.getElementById('scanner-container');
+            
+            scannerContent.classList.remove('hidden');
+            scannerContainer.classList.add('hidden');
+            
+            isScanning = false;
+            html5QrCode = null;
+        }
+
+        function processManualBarcode() {
+            const barcode = document.getElementById('manual-barcode').value.trim();
+            if (barcode) {
+                processBarcode(barcode);
+                document.getElementById('manual-barcode').value = '';
+            } else {
+                showToast('Please enter a barcode', 'warning');
+            }
+        }
+
+        function processBarcode(barcode) {
+            const items = DataManager.getItems();
+            const existingItem = items.find(item => item.barcode === barcode);
+            
+            if (existingItem) {
+                if (scanMode === 'detect') {
+                    const action = prompt('Item found! Choose action:\n1. Add Stock\n2. Use Item\n\nEnter 1 or 2:');
+                    if (action === '1') {
+                        addStockToItem(existingItem);
+                    } else if (action === '2') {
+                        useItem(existingItem);
+                    }
+                } else if (scanMode === 'add') {
+                    addStockToItem(existingItem);
+                } else if (scanMode === 'use') {
+                    useItem(existingItem);
+                }
+            } else {
+                // New item
+                showItemModal(barcode);
+            }
+        }
+
+        function addStockToItem(item) {
+            const quantity = parseInt(prompt('How many units to add?') || '1');
+            if (quantity > 0) {
+                DataManager.updateItem(item.id, { 
+                    current_stock: item.current_stock + quantity,
+                    last_used: new Date().toISOString()
+                });
+                showToast(`Added ${quantity} units to ${item.name}`);
+                if (currentPage === 'dashboard') loadDashboard();
+                if (currentPage === 'inventory') loadInventory();
+            }
+        }
+
+        function useItem(item) {
+            const quantity = parseInt(prompt('How many units used?') || '1');
+            if (quantity > 0) {
+                if (item.current_stock >= quantity) {
+                    DataManager.updateItem(item.id, { 
+                        current_stock: item.current_stock - quantity,
+                        last_used: new Date().toISOString()
+                    });
+                    showToast(`Used ${quantity} units of ${item.name}`);
+                    if (currentPage === 'dashboard') loadDashboard();
+                    if (currentPage === 'inventory') loadInventory();
+                } else {
+                    showToast('Insufficient stock', 'error');
+                }
+            }
+        }
+
+        // Modal Functions
+        function showItemModal(barcode = '', item = null) {
+            const modal = document.getElementById('item-modal');
+            const form = document.getElementById('item-form');
+            
+            if (item) {
+                // Edit mode
+                document.getElementById('item-modal-title').textContent = 'Edit Item';
+                document.getElementById('item-modal-subtitle').textContent = 'Update item details';
+                document.getElementById('item-name').value = item.name;
+                document.getElementById('item-category').value = item.category;
+                document.getElementById('item-unit').value = item.unit_type;
+                document.getElementById('item-brand').value = item.brand || '';
+                document.getElementById('item-size').value = item.size || '';
+                document.getElementById('item-stock').value = item.current_stock;
+                document.getElementById('item-alert').value = item.min_stock_alert;
+                document.getElementById('item-barcode').value = item.barcode;
+                document.getElementById('item-id').value = item.id;
+            } else {
+                // Add mode
+                document.getElementById('item-modal-title').textContent = 'Add New Item';
+                document.getElementById('item-modal-subtitle').textContent = 'Enter item details';
+                form.reset();
+                document.getElementById('item-barcode').value = barcode;
+                document.getElementById('item-id').value = '';
+            }
+            
+            modal.classList.add('show');
+        }
+
+        function closeItemModal() {
+            document.getElementById('item-modal').classList.remove('show');
+        }
+
+        function showAddChildModal() {
+            showChildModal();
+        }
+
+        function showChildModal(child = null) {
+            const modal = document.getElementById('child-modal');
+            const form = document.getElementById('child-form');
+            
+            if (child) {
+                // Edit mode
+                document.getElementById('child-modal-title').textContent = 'Edit Child Details';
+                document.getElementById('child-modal-subtitle').textContent = 'Update child information';
+                document.getElementById('child-name').value = child.name;
+                document.getElementById('child-dob').value = child.date_of_birth;
+                document.getElementById('child-gender').value = child.gender || '';
+                document.getElementById('child-height').value = child.height || '';
+                document.getElementById('child-weight').value = child.weight || '';
+                document.getElementById('child-notes').value = child.notes || '';
+                document.getElementById('child-id').value = child.id;
+            } else {
+                // Add mode
+                document.getElementById('child-modal-title').textContent = 'Add Child';
+                document.getElementById('child-modal-subtitle').textContent = 'Add your child\'s details';
+                form.reset();
+                document.getElementById('child-id').value = '';
+            }
+            
+            modal.classList.add('show');
+        }
+
+        function closeChildModal() {
+            document.getElementById('child-modal').classList.remove('show');
+        }
+
+        // Data Loading Functions
+        function loadDashboard() {
+            const items = DataManager.getItems();
+            const dashboardGrid = document.getElementById('inventory-dashboard');
+            const emptyState = document.getElementById('dashboard-empty');
+            
+            if (items.length === 0) {
+                dashboardGrid.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            dashboardGrid.style.display = 'grid';
+            emptyState.style.display = 'none';
+            
+            dashboardGrid.innerHTML = items.map(item => {
+                const status = getStockStatus(item);
+                return `
+                    <div class="card">
+                        <div class="card-header" style="display: flex; justify-content: space-between; align-items: flex-start;">
+                            <div style="flex: 1; min-width: 0;">
+                                <div class="card-title" style="font-size: 1.125rem; margin-bottom: 0.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.name}</div>
+                                <div class="card-subtitle" style="font-size: 0.875rem;">
+                                    ${item.category}${item.brand ? ` • ${item.brand}` : ''}
+                                </div>
+                            </div>
+                            <span class="badge ${status.class}" style="margin-left: 0.5rem;">${status.text}</span>
+                        </div>
+                        <div style="text-align: center; margin: 1rem 0;">
+                            <div style="font-size: 2rem; font-weight: 700; color: ${status.color}; margin-bottom: 0.25rem;">
+                                ${item.current_stock}
+                            </div>
+                            <p style="color: #6b7280; font-size: 0.875rem;">${item.unit_type} remaining</p>
+                        </div>
+                        ${item.current_stock <= item.min_stock_alert ? `
+                            <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: #f59e0b; margin-bottom: 1rem;">
+                                ⚠️ <span>Restock needed</span>
+                            </div>
+                        ` : ''}
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="btn btn-primary btn-sm" onclick="addStockToItem(${JSON.stringify(item).replace(/"/g, '&quot;')})" style="flex: 1;">
+                                ➕ Add
+                            </button>
+                            <button class="btn btn-secondary btn-sm" onclick="useItem(${JSON.stringify(item).replace(/"/g, '&quot;')})" ${item.current_stock === 0 ? 'disabled' : ''} style="flex: 1;">
+                                ➖ Use
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function loadInventory() {
+            filterInventory();
+        }
+
+        function filterInventory() {
+            const items = DataManager.getItems();
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const categoryFilter = document.getElementById('category-filter').value;
+            const stockFilter = document.getElementById('stock-filter').value;
+            
+            let filteredItems = items.filter(item => {
+                const matchesSearch = !searchTerm || 
+                    item.name.toLowerCase().includes(searchTerm) ||
+                    (item.brand && item.brand.toLowerCase().includes(searchTerm)) ||
+                    item.barcode.includes(searchTerm);
+                
+                const matchesCategory = !categoryFilter || item.category === categoryFilter;
+                
+                let matchesStock = true;
+                if (stockFilter === 'good') {
+                    matchesStock = item.current_stock > item.min_stock_alert;
+                } else if (stockFilter === 'low') {
+                    matchesStock = item.current_stock <= item.min_stock_alert && item.current_stock > 0;
+                } else if (stockFilter === 'out') {
+                    matchesStock = item.current_stock === 0;
+                }
+                
+                return matchesSearch && matchesCategory && matchesStock;
+            });
+            
+            const inventoryGrid = document.getElementById('inventory-grid');
+            const emptyState = document.getElementById('inventory-empty');
+            
+            if (filteredItems.length === 0) {
+                inventoryGrid.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            inventoryGrid.style.display = 'grid';
+            emptyState.style.display = 'none';
+            
+            inventoryGrid.innerHTML = filteredItems.map(item => {
+                const status = getStockStatus(item);
+                return `
+                    <div class="card">
+                        <div class="card-header" style="display: flex; justify-content: space-between; align-items: flex-start;">
+                            <div style="flex: 1; min-width: 0;">
+                                <div class="card-title" style="font-size: 1.125rem; margin-bottom: 0.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.name}</div>
+                                <div class="card-subtitle" style="font-size: 0.875rem;">
+                                    ${item.category}${item.brand ? ` • ${item.brand}` : ''}
+                                </div>
+                            </div>
+                            <span class="badge ${status.class}" style="margin-left: 0.5rem;">${status.text}</span>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; font-size: 0.875rem;">
+                            <div>
+                                <p style="color: #6b7280;">Current Stock</p>
+                                <p style="font-weight: 600; font-size: 1.125rem;">${item.current_stock} ${item.unit_type}</p>
+                            </div>
+                            <div>
+                                <p style="color: #6b7280;">Low Alert</p>
+                                <p style="font-weight: 600; font-size: 1.125rem;">${item.min_stock_alert} ${item.unit_type}</p>
+                            </div>
+                        </div>
+                        ${item.size ? `
+                            <div style="font-size: 0.875rem; margin-bottom: 1rem;">
+                                <p style="color: #6b7280;">Size</p>
+                                <p style="font-weight: 500;">${item.size}</p>
+                            </div>
+                        ` : ''}
+                        <div style="font-size: 0.75rem; color: #9ca3af; margin-bottom: 1rem;">
+                            <p>Barcode: ${item.barcode}</p>
+                            ${item.last_used ? `<p>Last used: ${new Date(item.last_used).toLocaleDateString()}</p>` : ''}
+                        </div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="btn btn-primary btn-sm" onclick="addStockToItem(${JSON.stringify(item).replace(/"/g, '&quot;')})" style="flex: 1;">
+                                ➕ Add
+                            </button>
+                            <button class="btn btn-secondary btn-sm" onclick="useItem(${JSON.stringify(item).replace(/"/g, '&quot;')})" ${item.current_stock === 0 ? 'disabled' : ''} style="flex: 1;">
+                                ➖ Use
+                            </button>
+                            <button class="btn btn-secondary btn-sm" onclick="showItemModal('', ${JSON.stringify(item).replace(/"/g, '&quot;')})">
+                                ✏️
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function clearFilters() {
+            document.getElementById('search-input').value = '';
+            document.getElementById('category-filter').value = '';
+            document.getElementById('stock-filter').value = '';
+            filterInventory();
+        }
+
+        function loadChildren() {
+            const children = DataManager.getChildren();
+            const childrenGrid = document.getElementById('children-grid');
+            const emptyState = document.getElementById('children-empty');
+            
+            if (children.length === 0) {
+                childrenGrid.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            childrenGrid.style.display = 'grid';
+            emptyState.style.display = 'none';
+            
+            childrenGrid.innerHTML = children.map(child => `
+                <div class="card">
+                    <div class="card-header" style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <div style="font-size: 1.25rem;">👶</div>
+                            <div class="card-title" style="font-size: 1.125rem; margin: 0;">${child.name}</div>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="btn btn-secondary btn-sm" onclick="showChildModal(${JSON.stringify(child).replace(/"/g, '&quot;')})">
+                                ✏️
+                            </button>
+                            <button class="btn btn-secondary btn-sm" onclick="deleteChild('${child.id}')" style="color: #dc2626;">
+                                🗑️
+                            </button>
+                        </div>
+                    </div>
+                    ${child.gender ? `
+                        <div style="margin-bottom: 1rem;">
+                            <span class="badge badge-success">
+                                👤 ${child.gender}
+                            </span>
+                        </div>
+                    ` : ''}
+                    <div style="display: grid; gap: 1rem;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <div style="font-size: 1rem;">📅</div>
+                            <div>
+                                <p style="font-size: 0.875rem; font-weight: 500; margin: 0;">Age</p>
+                                <p style="font-size: 0.875rem; color: #6b7280; margin: 0;">${calculateAge(child.date_of_birth)}</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <div style="font-size: 1rem;">🎂</div>
+                            <div>
+                                <p style="font-size: 0.875rem; font-weight: 500; margin: 0;">Born</p>
+                                <p style="font-size: 0.875rem; color: #6b7280; margin: 0;">${new Date(child.date_of_birth).toLocaleDateString()}</p>
+                            </div>
+                        </div>
+                        ${child.height ? `
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <div style="font-size: 1rem;">📏</div>
+                                <div>
+                                    <p style="font-size: 0.875rem; font-weight: 500; margin: 0;">Height</p>
+                                    <p style="font-size: 0.875rem; color: #6b7280; margin: 0;">${child.height} cm</p>
+                                </div>
+                            </div>
+                        ` : ''}
+                        ${child.weight ? `
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <div style="font-size: 1rem;">⚖️</div>
+                                <div>
+                                    <p style="font-size: 0.875rem; font-weight: 500; margin: 0;">Weight</p>
+                                    <p style="font-size: 0.875rem; color: #6b7280; margin: 0;">${child.weight} kg</p>
+                                </div>
+                            </div>
+                        ` : ''}
+                        ${child.notes ? `
+                            <div style="margin-top: 1rem; padding: 0.75rem; background: #f9fafb; border-radius: 0.5rem;">
+                                <p style="font-size: 0.875rem; color: #374151; margin: 0;">${child.notes}</p>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function deleteChild(id) {
+            const child = DataManager.getChildren().find(c => c.id === id);
+            if (confirm(`Are you sure you want to delete ${child.name}'s details?`)) {
+                DataManager.deleteChild(id);
+                showToast(`Deleted ${child.name}'s details`);
+                loadChildren();
+            }
+        }
+
+        function updateItemsCount() {
+            const itemCount = DataManager.getItems().length;
+            document.getElementById('items-count').textContent = itemCount;
+        }
+
+        // Data Management Functions
+        function exportData() {
+            const data = {
+                items: DataManager.getItems(),
+                children: DataManager.getChildren(),
+                theme: currentTheme,
+                exportDate: new Date().toISOString(),
+                version: '1.0.0'
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `caelestis-backup-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            showToast('Data exported successfully');
+        }
+
+        function importData() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        try {
+                            const data = JSON.parse(e.target.result);
+                            
+                            if (data.items) DataManager.setItems(data.items);
+                            if (data.children) DataManager.setChildren(data.children);
+                            if (data.theme) setTheme(data.theme);
+                            
+                            showToast('Data imported successfully');
+                            
+                            // Refresh current page
+                            if (currentPage === 'dashboard') loadDashboard();
+                            else if (currentPage === 'inventory') loadInventory();
+                            else if (currentPage === 'children') loadChildren();
+                            
+                        } catch (error) {
+                            showToast('Invalid backup file', 'error');
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            };
+            input.click();
+        }
+
+        function clearAllData() {
+            if (confirm('Are you sure you want to clear all data? This cannot be undone.')) {
+                if (confirm('This will delete all inventory items and child records. Continue?')) {
+                    localStorage.removeItem('caelestis-items');
+                    localStorage.removeItem('caelestis-children');
+                    showToast('All data cleared');
+                    
+                    // Refresh current page
+                    if (currentPage === 'dashboard') loadDashboard();
+                    else if (currentPage === 'inventory') loadInventory();
+                    else if (currentPage === 'children') loadChildren();
+                    else if (currentPage === 'settings') updateItemsCount();
+                }
+            }
+        }
+
+        // Form Handlers
+        document.getElementById('item-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const itemData = {
+                name: document.getElementById('item-name').value,
+                category: document.getElementById('item-category').value,
+                unit_type: document.getElementById('item-unit').value,
+                brand: document.getElementById('item-brand').value,
+                size: document.getElementById('item-size').value,
+                current_stock: parseInt(document.getElementById('item-stock').value) || 0,
+                min_stock_alert: parseInt(document.getElementById('item-alert').value) || 5,
+                barcode: document.getElementById('item-barcode').value
+            };
+            
+            const itemId = document.getElementById('item-id').value;
+            
+            if (itemId) {
+                // Update existing item
+                DataManager.updateItem(itemId, itemData);
+                showToast('Item updated successfully');
+            } else {
+                // Add new item
+                DataManager.addItem(itemData);
+                showToast('Item added successfully');
+            }
+            
+            closeItemModal();
+            
+            // Refresh current page
+            if (currentPage === 'dashboard') loadDashboard();
+            else if (currentPage === 'inventory') loadInventory();
+        });
+
+        document.getElementById('child-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const childData = {
+                name: document.getElementById('child-name').value,
+                date_of_birth: document.getElementById('child-dob').value,
+                gender: document.getElementById('child-gender').value,
+                height: parseFloat(document.getElementById('child-height').value) || null,
+                weight: parseFloat(document.getElementById('child-weight').value) || null,
+                notes: document.getElementById('child-notes').value
+            };
+            
+            // Remove null values
+            Object.keys(childData).forEach(key => {
+                if (childData[key] === null || childData[key] === '') {
+                    delete childData[key];
+                }
+            });
+            
+            const childId = document.getElementById('child-id').value;
+            
+            if (childId) {
+                // Update existing child
+                DataManager.updateChild(childId, childData);
+                showToast('Child details updated successfully');
+            } else {
+                // Add new child
+                DataManager.addChild(childData);
+                showToast('Child added successfully');
+            }
+            
+            closeChildModal();
+            loadChildren();
+        });
+
+        // Close modals when clicking outside
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.remove('show');
+            }
+        });
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set initial theme
+            setTheme(currentTheme);
+            
+            // Load initial page
+            loadDashboard();
+            
+            // Set up keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    document.querySelectorAll('.modal.show').forEach(modal => {
+                        modal.classList.remove('show');
+                    });
+                    
+                    if (isScanning) {
+                        stopScanner();
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
