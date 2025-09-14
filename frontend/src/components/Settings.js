@@ -53,7 +53,7 @@ const Settings = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="p-4 border-2 rounded-lg bg-blue-50 border-blue-200">
                 <div className="flex items-center gap-2 mb-2">
-                  <div className="w-4 h-4 bg-gradient-to-r from-blue-400 to-cyan-500 rounded"></div>
+                  <div className="w-4 h-4 rounded" style={{backgroundColor: '#89CFF0'}}></div>
                   <span className="font-medium text-blue-800">Baby Blue Theme</span>
                 </div>
                 <p className="text-sm text-blue-600">Calming blue tones perfect for a peaceful nursery</p>
@@ -64,11 +64,11 @@ const Settings = () => {
 
               <div className="p-4 border-2 rounded-lg bg-pink-50 border-pink-200">
                 <div className="flex items-center gap-2 mb-2">
-                  <div className="w-4 h-4 bg-gradient-to-r from-pink-400 to-rose-500 rounded"></div>
-                  <span className="font-medium text-pink-800">Baby Pink Theme</span>
+                  <div className="w-4 h-4 rounded" style={{backgroundColor: '#FDD5DF'}}></div>
+                  <span className="font-medium text-pink-800">Baby Girl Theme</span>
                 </div>
                 <p className="text-sm text-pink-600">Warm pink tones creating a cozy atmosphere</p>
-                {theme === 'baby-pink' && (
+                {theme === 'baby-girl' && (
                   <Badge className="mt-2 bg-pink-100 text-pink-800">Current</Badge>
                 )}
               </div>
