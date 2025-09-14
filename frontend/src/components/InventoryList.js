@@ -351,13 +351,25 @@ const InventoryList = () => {
                       <div>
                         <p className="text-gray-600">Current Stock</p>
                         <p className="font-semibold text-lg">
-                          {item.current_stock} {item.unit_type}
+                          <EditableQuantity
+                            value={item.current_stock}
+                            onSave={(newStock) => updateStock(item, newStock)}
+                            className="font-semibold text-lg"
+                            inputClassName="font-semibold text-lg text-center w-16"
+                            min={0}
+                          /> {item.unit_type}
                         </p>
                       </div>
                       <div>
                         <p className="text-gray-600">Low Stock Alert</p>
                         <p className="font-semibold text-lg">
-                          {item.min_stock_alert} {item.unit_type}
+                          <EditableQuantity
+                            value={item.min_stock_alert}
+                            onSave={(newMinStock) => updateMinStockAlert(item, newMinStock)}
+                            className="font-semibold text-lg"
+                            inputClassName="font-semibold text-lg text-center w-16"
+                            min={0}
+                          /> {item.unit_type}
                         </p>
                       </div>
                     </div>
