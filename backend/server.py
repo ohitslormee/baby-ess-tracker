@@ -292,20 +292,6 @@ async def use_item(item_id: str, usage_data: UsageLogCreate):
     
     return usage_log
 
-@api_router.get("/inventory/low-stock")
-async def get_low_stock_items():
-    """Get items that are below their minimum stock alert level"""
-    pipeline = [
-        {
-            "$expr": {
-                "$lte": ["$current_stock", "$min_stock_alert"]
-            }
-        }
-    ]
-    
-    items = await db.inventory.aggregate(pipeline).to_list(1000)
-    return [InventoryItem(**parse_from_mongo(item)) for item in items]
-
 @api_router.get("/usage-logs", response_model=List[UsageLog])
 async def get_usage_logs(limit: int = 100):
     """Get usage logs"""
