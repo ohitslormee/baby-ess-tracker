@@ -328,9 +328,9 @@ async def get_usage_logs(limit: int = 100):
 async def get_dashboard_stats():
     """Get dashboard statistics"""
     total_items = await db.inventory.count_documents({})
-    low_stock_count = await db.inventory.count_documents({
-        "$expr": {"$lte": ["$current_stock", "$min_stock_alert"]}
-    })
+    # Use simple count instead of $expr for compatibility
+    all_items = await db.inventory.find().to_list(1000)
+    low_stock_count = len([item for item in all_items if item.get('current_stock', 0) <= item.get('min_stock_alert', 5)])
     out_of_stock_count = await db.inventory.count_documents({"current_stock": 0})
     
     return {
@@ -338,6 +338,65 @@ async def get_dashboard_stats():
         "low_stock_items": low_stock_count,
         "out_of_stock_items": out_of_stock_count
     }
+
+# Children management endpoints
+@api_router.post("/children", response_model=Child)
+async def create_child(child: ChildCreate):
+    """Create a new child record"""
+    child_dict = child.dict()
+    child_obj = Child(**child_dict)
+    
+    # Prepare for MongoDB storage
+    child_to_store = prepare_for_mongo(child_obj.dict())
+    await db.children.insert_one(child_to_store)
+    
+    return child_obj
+
+@api_router.get("/children", response_model=List[Child])
+async def get_children():
+    """Get all children records"""
+    children = await db.children.find().to_list(100)
+    return [Child(**parse_from_mongo(child)) for child in children]
+
+@api_router.get("/children/{child_id}", response_model=Child)
+async def get_child(child_id: str):
+    """Get a specific child record"""
+    child = await db.children.find_one({"id": child_id})
+    if not child:
+        raise HTTPException(status_code=404, detail="Child not found")
+    return Child(**parse_from_mongo(child))
+
+@api_router.put("/children/{child_id}", response_model=Child)
+async def update_child(child_id: str, update_data: ChildUpdate):
+    """Update a child record"""
+    # Get existing child
+    existing_child = await db.children.find_one({"id": child_id})
+    if not existing_child:
+        raise HTTPException(status_code=404, detail="Child not found")
+    
+    # Update fields
+    update_dict = {k: v for k, v in update_data.dict().items() if v is not None}
+    update_dict['updated_at'] = datetime.now(timezone.utc)
+    
+    # Prepare for MongoDB
+    update_dict = prepare_for_mongo(update_dict)
+    
+    await db.children.update_one(
+        {"id": child_id},
+        {"$set": update_dict}
+    )
+    
+    # Return updated child
+    updated_child = await db.children.find_one({"id": child_id})
+    return Child(**parse_from_mongo(updated_child))
+
+@api_router.delete("/children/{child_id}")
+async def delete_child(child_id: str):
+    """Delete a child record"""
+    result = await db.children.delete_one({"id": child_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Child not found")
+    return {"message": "Child deleted successfully"}
 
 # Include the router in the main app
 app.include_router(api_router)
