@@ -176,7 +176,7 @@ const ChildrenDetails = () => {
           <Card>
             <CardContent className="text-center py-12">
               <Baby className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">No children added yet</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">No child added yet</h3>
               <p className="text-gray-600 mb-4">Start by adding your child's details to track their growth and milestones.</p>
               <Button
                 onClick={() => setShowAddDialog(true)}
