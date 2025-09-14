@@ -188,26 +188,98 @@ class BabyERPAPITester:
         """Test dashboard stats after creating items"""
         return self.run_test("Dashboard Stats (With Data)", "GET", "dashboard/stats", 200)
 
+    def test_get_children_empty(self):
+        """Test getting children when empty"""
+        return self.run_test("Get Children (Empty)", "GET", "children", 200)
+
+    def test_create_child(self):
+        """Test creating a new child record"""
+        test_child = {
+            "name": "Emma Johnson",
+            "date_of_birth": "2023-03-15",
+            "gender": "Girl",
+            "height": 75.5,
+            "weight": 9.2,
+            "notes": "First child, loves music"
+        }
+        
+        success, response_data = self.run_test("Create Child", "POST", "children", 200, test_child)
+        if success and 'id' in response_data:
+            self.created_children = getattr(self, 'created_children', [])
+            self.created_children.append(response_data['id'])
+            print(f"   Created child ID: {response_data['id']}")
+        return success, response_data
+
+    def test_create_minimal_child(self):
+        """Test creating child with minimal required fields"""
+        test_child = {
+            "name": "Alex Smith",
+            "date_of_birth": "2022-08-20"
+        }
+        
+        success, response_data = self.run_test("Create Minimal Child", "POST", "children", 200, test_child)
+        if success and 'id' in response_data:
+            self.created_children = getattr(self, 'created_children', [])
+            self.created_children.append(response_data['id'])
+            print(f"   Created child ID: {response_data['id']}")
+        return success, response_data
+
+    def test_get_children_with_data(self):
+        """Test getting children after creating some"""
+        return self.run_test("Get Children (With Data)", "GET", "children", 200)
+
+    def test_get_child_by_id(self):
+        """Test getting specific child by ID"""
+        if not hasattr(self, 'created_children') or not self.created_children:
+            return self.log_test("Get Child by ID", False, "No children created to test with"), {}
+        
+        child_id = self.created_children[0]
+        return self.run_test("Get Child by ID", "GET", f"children/{child_id}", 200)
+
+    def test_update_child(self):
+        """Test updating a child record"""
+        if not hasattr(self, 'created_children') or not self.created_children:
+            return self.log_test("Update Child", False, "No children created to test with"), {}
+        
+        child_id = self.created_children[0]
+        update_data = {
+            "name": "Emma Johnson Updated",
+            "height": 80.0,
+            "weight": 10.5,
+            "notes": "Updated notes - growing well!"
+        }
+        
+        return self.run_test("Update Child", "PUT", f"children/{child_id}", 200, update_data)
+
+    def test_delete_child(self):
+        """Test deleting a child record"""
+        if not hasattr(self, 'created_children') or not self.created_children:
+            return self.log_test("Delete Child", False, "No children created to test with"), {}
+        
+        # Delete the last created child
+        child_id = self.created_children.pop()
+        return self.run_test("Delete Child", "DELETE", f"children/{child_id}", 200)
+
     def test_error_cases(self):
         """Test various error cases"""
         print("\n🔍 Testing Error Cases...")
         
-        # Test non-existent item
+        # Inventory error cases
         self.run_test("Get Non-existent Item", "GET", "inventory/non-existent-id", 404)
-        
-        # Test non-existent barcode
         self.run_test("Get Non-existent Barcode", "GET", "inventory/barcode/999999999", 404)
-        
-        # Test adding stock to non-existent item
         self.run_test("Add Stock to Non-existent Item", "POST", "inventory/non-existent-id/add-stock", 404, params={"quantity": 1})
         
-        # Test using non-existent item
         usage_data = {
             "item_id": "non-existent-id",
             "barcode": "999999999",
             "quantity_used": 1
         }
         self.run_test("Use Non-existent Item", "POST", "inventory/non-existent-id/use", 404, usage_data)
+        
+        # Children error cases
+        self.run_test("Get Non-existent Child", "GET", "children/non-existent-id", 404)
+        self.run_test("Update Non-existent Child", "PUT", "children/non-existent-id", 404, {"name": "Test"})
+        self.run_test("Delete Non-existent Child", "DELETE", "children/non-existent-id", 404)
 
     def run_comprehensive_test(self):
         """Run all tests in sequence"""
