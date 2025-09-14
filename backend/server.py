@@ -94,6 +94,33 @@ class UsageLogCreate(BaseModel):
     quantity_used: int = 1
     notes: Optional[str] = None
 
+class Child(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: str
+    date_of_birth: str  # Using string for date to avoid serialization issues
+    gender: Optional[str] = None
+    height: Optional[float] = None  # in cm
+    weight: Optional[float] = None  # in kg
+    notes: Optional[str] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class ChildCreate(BaseModel):
+    name: str
+    date_of_birth: str
+    gender: Optional[str] = None
+    height: Optional[float] = None
+    weight: Optional[float] = None
+    notes: Optional[str] = None
+
+class ChildUpdate(BaseModel):
+    name: Optional[str] = None
+    date_of_birth: Optional[str] = None
+    gender: Optional[str] = None
+    height: Optional[float] = None
+    weight: Optional[float] = None
+    notes: Optional[str] = None
+
 class ProductLookupResponse(BaseModel):
     found: bool
     product_name: Optional[str] = None
