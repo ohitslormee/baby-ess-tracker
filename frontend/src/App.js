@@ -1,52 +1,220 @@
-import { useEffect } from "react";
-import "./App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import axios from 'axios';
+import { Package, Scan, TrendingDown, AlertTriangle, Plus, Minus, Search } from 'lucide-react';
+import BarcodeScanner from './components/BarcodeScanner';
+import InventoryDashboard from './components/InventoryDashboard';
+import InventoryList from './components/InventoryList';
+import { Button } from './components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './components/ui/card';
+import { Badge } from './components/ui/badge';
+import { Toaster } from './components/ui/sonner';
+import { toast } from 'sonner';
+import './App.css';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
+// Navigation component
+const Navigation = () => {
+  return (
+    <nav className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          <div className="flex items-center space-x-4">
+            <Package className="h-8 w-8" />
+            <span className="text-xl font-bold">Baby ERP</span>
+          </div>
+          <div className="flex space-x-4">
+            <Link to="/" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-emerald-700 transition-colors">
+              Dashboard
+            </Link>
+            <Link to="/scan" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-emerald-700 transition-colors">
+              Scan
+            </Link>
+            <Link to="/inventory" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-emerald-700 transition-colors">
+              Inventory
+            </Link>
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
+};
+
+// Home/Dashboard component
 const Home = () => {
-  const helloWorldApi = async () => {
+  const [stats, setStats] = useState({
+    total_items: 0,
+    low_stock_items: 0,
+    out_of_stock_items: 0
+  });
+  const [lowStockItems, setLowStockItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, []);
+
+  const fetchDashboardData = async () => {
     try {
-      const response = await axios.get(`${API}/`);
-      console.log(response.data.message);
-    } catch (e) {
-      console.error(e, `errored out requesting / api`);
+      setLoading(true);
+      
+      // Fetch dashboard stats
+      const statsResponse = await axios.get(`${API}/dashboard/stats`);
+      setStats(statsResponse.data);
+      
+      // Fetch low stock items
+      const lowStockResponse = await axios.get(`${API}/inventory/low-stock`);
+      setLowStockItems(lowStockResponse.data);
+      
+    } catch (error) {
+      console.error('Error fetching dashboard data:', error);
+      toast.error('Failed to load dashboard data');
+    } finally {
+      setLoading(false);
     }
   };
 
-  useEffect(() => {
-    helloWorldApi();
-  }, []);
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-emerald-600"></div>
+      </div>
+    );
+  }
 
   return (
-    <div>
-      <header className="App-header">
-        <a
-          className="App-link"
-          href="https://emergent.sh"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" />
-        </a>
-        <p className="mt-5">Building something incredible ~!</p>
-      </header>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+      <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">Baby Supply Dashboard</h1>
+          <p className="text-gray-600 text-lg">Track your baby essentials with smart inventory management</p>
+        </div>
+
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-gray-600">Total Items</CardTitle>
+              <Package className="h-4 w-4 text-emerald-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-gray-900">{stats.total_items}</div>
+              <p className="text-xs text-gray-500 mt-1">Items in inventory</p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-gray-600">Low Stock</CardTitle>
+              <TrendingDown className="h-4 w-4 text-orange-500" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-orange-600">{stats.low_stock_items}</div>
+              <p className="text-xs text-gray-500 mt-1">Items need restocking</p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-gray-600">Out of Stock</CardTitle>
+              <AlertTriangle className="h-4 w-4 text-red-500" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-red-600">{stats.out_of_stock_items}</div>
+              <p className="text-xs text-gray-500 mt-1">Items out of stock</p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Quick Actions</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Link to="/scan">
+              <Card className="bg-emerald-50 border-emerald-200 hover:bg-emerald-100 cursor-pointer transition-colors h-full">
+                <CardContent className="flex items-center justify-center p-8">
+                  <div className="text-center">
+                    <Scan className="h-12 w-12 text-emerald-600 mx-auto mb-4" />
+                    <h3 className="text-lg font-semibold text-emerald-800">Scan Barcode</h3>
+                    <p className="text-emerald-600">Add new items or record usage</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+            
+            <Link to="/inventory">
+              <Card className="bg-blue-50 border-blue-200 hover:bg-blue-100 cursor-pointer transition-colors h-full">
+                <CardContent className="flex items-center justify-center p-8">
+                  <div className="text-center">
+                    <Search className="h-12 w-12 text-blue-600 mx-auto mb-4" />
+                    <h3 className="text-lg font-semibold text-blue-800">View Inventory</h3>
+                    <p className="text-blue-600">Browse and manage all items</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+          </div>
+        </div>
+
+        {/* Low Stock Alert */}
+        {lowStockItems.length > 0 && (
+          <Card className="bg-orange-50 border-orange-200">
+            <CardHeader>
+              <CardTitle className="flex items-center text-orange-800">
+                <AlertTriangle className="h-5 w-5 mr-2" />
+                Low Stock Alert
+              </CardTitle>
+              <CardDescription className="text-orange-600">
+                These items are running low and need restocking
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {lowStockItems.slice(0, 5).map((item) => (
+                  <div key={item.id} className="flex items-center justify-between p-3 bg-white rounded-lg border border-orange-200">
+                    <div>
+                      <h4 className="font-medium text-gray-900">{item.name}</h4>
+                      <p className="text-sm text-gray-600">{item.category} • {item.brand}</p>
+                    </div>
+                    <Badge variant={item.current_stock === 0 ? "destructive" : "secondary"}>
+                      {item.current_stock} {item.unit_type}
+                    </Badge>
+                  </div>
+                ))}
+              </div>
+              {lowStockItems.length > 5 && (
+                <div className="mt-4 text-center">
+                  <Link to="/inventory">
+                    <Button variant="outline" className="text-orange-700 border-orange-300 hover:bg-orange-100">
+                      View All Low Stock Items
+                    </Button>
+                  </Link>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        )}
+      </div>
     </div>
   );
 };
 
+// Main App component
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
+        <Navigation />
         <Routes>
-          <Route path="/" element={<Home />}>
-            <Route index element={<Home />} />
-          </Route>
+          <Route path="/" element={<Home />} />
+          <Route path="/scan" element={<BarcodeScanner />} />
+          <Route path="/inventory" element={<InventoryList />} />
+          <Route path="/dashboard" element={<InventoryDashboard />} />
         </Routes>
       </BrowserRouter>
+      <Toaster position="top-right" />
     </div>
   );
 }
