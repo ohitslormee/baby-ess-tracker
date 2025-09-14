@@ -292,8 +292,8 @@ const Home = () => {
                 <CardContent className="flex items-center justify-center p-8">
                   <div className="text-center">
                     <Baby className={`h-12 w-12 ${colors.primaryText} mx-auto mb-4`} />
-                    <h3 className={`text-lg font-semibold ${colors.primaryText.replace('text-', 'text-').replace('-600', '-800')}`}>Children Details</h3>
-                    <p className={colors.primaryText}>Manage children information</p>
+                    <h3 className={`text-lg font-semibold ${colors.primaryText.replace('text-', 'text-').replace('-600', '-800')}`}>Child Details</h3>
+                    <p className={colors.primaryText}>Manage child information</p>
                   </div>
                 </CardContent>
               </Card>
