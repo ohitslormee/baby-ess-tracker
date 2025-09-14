@@ -37,40 +37,40 @@ const Navigation = () => {
         </div>
         
         {/* Desktop navigation */}
-        <div className="hidden md:flex justify-center space-x-6 pb-2">
-          <Link to="/" className="px-2 py-1 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
+        <div className="hidden md:flex justify-center space-x-4 pb-2">
+          <Link to="/" className="px-3 py-1 rounded-md text-base font-medium hover:bg-black/10 transition-colors">
             Dashboard
           </Link>
-          <Link to="/scan" className="px-2 py-1 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
+          <Link to="/scan" className="px-3 py-1 rounded-md text-base font-medium hover:bg-black/10 transition-colors">
             Scan
           </Link>
-          <Link to="/inventory" className="px-2 py-1 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
+          <Link to="/inventory" className="px-3 py-1 rounded-md text-base font-medium hover:bg-black/10 transition-colors">
             Inventory
           </Link>
-          <Link to="/children" className="px-2 py-1 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
+          <Link to="/children" className="px-3 py-1 rounded-md text-base font-medium hover:bg-black/10 transition-colors">
             Child
           </Link>
-          <Link to="/settings" className="px-2 py-1 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
+          <Link to="/settings" className="px-3 py-1 rounded-md text-base font-medium hover:bg-black/10 transition-colors">
             Settings
           </Link>
         </div>
         
         {/* Mobile navigation - single line */}
         <div className="md:hidden pb-1">
-          <div className="flex justify-center space-x-2 overflow-x-auto">
-            <Link to="/" className="px-2 py-1 rounded-md text-xs font-medium hover:bg-black/10 transition-colors whitespace-nowrap">
+          <div className="flex justify-center space-x-1 overflow-x-auto">
+            <Link to="/" className="px-2 py-1 rounded-md text-sm font-medium hover:bg-black/10 transition-colors whitespace-nowrap">
               Dashboard
             </Link>
-            <Link to="/scan" className="px-2 py-1 rounded-md text-xs font-medium hover:bg-black/10 transition-colors whitespace-nowrap">
+            <Link to="/scan" className="px-2 py-1 rounded-md text-sm font-medium hover:bg-black/10 transition-colors whitespace-nowrap">
               Scan
             </Link>
-            <Link to="/inventory" className="px-2 py-1 rounded-md text-xs font-medium hover:bg-black/10 transition-colors whitespace-nowrap">
+            <Link to="/inventory" className="px-2 py-1 rounded-md text-sm font-medium hover:bg-black/10 transition-colors whitespace-nowrap">
               Inventory
             </Link>
-            <Link to="/children" className="px-2 py-1 rounded-md text-xs font-medium hover:bg-black/10 transition-colors whitespace-nowrap">
+            <Link to="/children" className="px-2 py-1 rounded-md text-sm font-medium hover:bg-black/10 transition-colors whitespace-nowrap">
               Child
             </Link>
-            <Link to="/settings" className="px-2 py-1 rounded-md text-xs font-medium hover:bg-black/10 transition-colors whitespace-nowrap">
+            <Link to="/settings" className="px-2 py-1 rounded-md text-sm font-medium hover:bg-black/10 transition-colors whitespace-nowrap">
               Settings
             </Link>
           </div>
