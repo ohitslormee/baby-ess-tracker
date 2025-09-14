@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Baby, Plus, Edit, Trash2, Calendar, Scale, Ruler2, User } from 'lucide-react';
+import { Baby, Plus, Edit, Trash2, Calendar, Scale, Ruler, User } from 'lucide-react';
 import { Button } from './ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Input } from './ui/input';
