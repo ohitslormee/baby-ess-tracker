@@ -330,7 +330,7 @@ const BarcodeScanner = () => {
               <div className="text-center py-8">
                 <Camera className="h-16 w-16 text-gray-400 mx-auto mb-4" />
                 <p className="text-gray-600 mb-4">Ready to scan barcodes</p>
-                <Button onClick={startScanner} className="btn-primary">
+                <Button onClick={startScanner} className={`${colors.button} text-white`}>
                   <Camera className="h-4 w-4 mr-2" />
                   Start Camera
                 </Button>
