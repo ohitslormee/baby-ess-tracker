@@ -21,14 +21,14 @@ body {
 
 /* Theme-specific styles */
 [data-theme="baby-blue"] {
-  --primary-color: #60a5fa;
-  --primary-dark: #3b82f6;
+  --primary-color: #89CFF0;
+  --primary-dark: #6FB8E8;
   --primary-light: #dbeafe;
 }
 
-[data-theme="baby-pink"] {
-  --primary-color: #f472b6;
-  --primary-dark: #ec4899;
+[data-theme="baby-girl"] {
+  --primary-color: #FDD5DF;
+  --primary-dark: #FCB6C8;
   --primary-light: #fce7f3;
 }
 
