@@ -37,7 +37,7 @@ const Navigation = () => {
         </div>
         
         {/* Desktop navigation */}
-        <div className="hidden md:flex justify-center space-x-6 pb-2">
+        <div className="hidden md:flex space-x-4">
           <Link to="/" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
             Dashboard
           </Link>
@@ -48,29 +48,29 @@ const Navigation = () => {
             Inventory
           </Link>
           <Link to="/children" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
-            Children
+            Child
           </Link>
           <Link to="/settings" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
             Settings
           </Link>
         </div>
         
-        {/* Mobile navigation */}
-        <div className="md:hidden pb-4">
-          <div className="flex flex-wrap justify-center gap-2">
-            <Link to="/" className="px-2 py-1 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
+        {/* Mobile navigation - single line */}
+        <div className="md:hidden pb-2">
+          <div className="flex justify-center space-x-2 overflow-x-auto">
+            <Link to="/" className="px-2 py-1 rounded-md text-xs font-medium hover:bg-black/10 transition-colors whitespace-nowrap">
               Dashboard
             </Link>
-            <Link to="/scan" className="px-2 py-1 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
+            <Link to="/scan" className="px-2 py-1 rounded-md text-xs font-medium hover:bg-black/10 transition-colors whitespace-nowrap">
               Scan
             </Link>
-            <Link to="/inventory" className="px-2 py-1 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
+            <Link to="/inventory" className="px-2 py-1 rounded-md text-xs font-medium hover:bg-black/10 transition-colors whitespace-nowrap">
               Inventory
             </Link>
-            <Link to="/children" className="px-2 py-1 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
-              Children
+            <Link to="/children" className="px-2 py-1 rounded-md text-xs font-medium hover:bg-black/10 transition-colors whitespace-nowrap">
+              Child
             </Link>
-            <Link to="/settings" className="px-2 py-1 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
+            <Link to="/settings" className="px-2 py-1 rounded-md text-xs font-medium hover:bg-black/10 transition-colors whitespace-nowrap">
               Settings
             </Link>
           </div>
