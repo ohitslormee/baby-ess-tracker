@@ -253,13 +253,27 @@ body {
 
 /* Responsive navigation */
 @media (max-width: 768px) {
+  nav .max-w-7xl {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
   nav .flex {
     flex-wrap: wrap;
+    min-height: 4rem;
   }
   
   nav .space-x-4 {
-    margin-top: 0.5rem;
-    width: 100%;
+    gap: 0.5rem;
+    flex-wrap: wrap;
     justify-content: center;
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+  
+  nav .space-x-4 a {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    white-space: nowrap;
   }
 }
