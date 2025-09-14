@@ -192,16 +192,15 @@ async def get_inventory():
 @api_router.get("/inventory/low-stock")
 async def get_low_stock_items():
     """Get items that are below their minimum stock alert level"""
-    pipeline = [
-        {
-            "$expr": {
-                "$lte": ["$current_stock", "$min_stock_alert"]
-            }
-        }
-    ]
+    # Using a simple approach since $expr might not be supported in older MongoDB versions
+    all_items = await db.inventory.find().to_list(1000)
+    low_stock_items = []
     
-    items = await db.inventory.aggregate(pipeline).to_list(1000)
-    return [InventoryItem(**parse_from_mongo(item)) for item in items]
+    for item in all_items:
+        if item.get('current_stock', 0) <= item.get('min_stock_alert', 5):
+            low_stock_items.append(item)
+    
+    return [InventoryItem(**parse_from_mongo(item)) for item in low_stock_items]
 
 @api_router.get("/inventory/{item_id}", response_model=InventoryItem)
 async def get_inventory_item(item_id: str):
