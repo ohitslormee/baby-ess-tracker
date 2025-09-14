@@ -131,28 +131,28 @@ frontend:
         comment: "Created reusable EditableQuantity component with click-to-edit functionality, validation, and keyboard shortcuts"
 
   - task: "Update Dashboard (App.js) to use EditableQuantity for stock quantities"
-    implemented: false
+    implemented: true
     working: "NA"
     file: "/app/frontend/src/App.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
-        comment: "Need to replace static quantity display with EditableQuantity component"
+        comment: "Updated dashboard to use EditableQuantity component with click-to-edit functionality. Added updateStock function and improved button layout with single-click +1/-1 and custom quantity options."
 
   - task: "Update InventoryList to use EditableQuantity for stock quantities"
-    implemented: false
+    implemented: true
     working: "NA"
     file: "/app/frontend/src/components/InventoryList.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
-        comment: "Need to replace static quantity display with EditableQuantity component"
+        comment: "Updated inventory list to use EditableQuantity for both current stock and min stock alert quantities. Added updateStock and updateMinStockAlert functions. Improved button layout with single-click and custom quantity options."
 
 metadata:
   created_by: "main_agent"
