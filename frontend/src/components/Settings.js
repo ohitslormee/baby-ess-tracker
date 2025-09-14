@@ -33,7 +33,7 @@ const Settings = () => {
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-medium text-gray-900">Current Theme</h3>
-                <p className="text-sm text-gray-600">Switch between baby blue and baby pink themes</p>
+                <p className="text-sm text-gray-600">Switch between baby blue and baby girl themes</p>
               </div>
               <div className="flex items-center gap-4">
                 <Badge className={colors.accent}>
