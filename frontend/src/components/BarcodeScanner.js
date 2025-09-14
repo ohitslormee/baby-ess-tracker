@@ -16,6 +16,7 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
 const BarcodeScanner = () => {
+  const { colors } = useTheme();
   const [isScanning, setIsScanning] = useState(false);
   const [scannedBarcode, setScannedBarcode] = useState('');
   const [scanMode, setScanMode] = useState('detect'); // 'detect', 'add', 'use'
