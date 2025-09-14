@@ -25,31 +25,34 @@ const Navigation = () => {
   return (
     <nav className={`bg-gradient-to-r ${colors.nav} text-white shadow-lg`} style={{backgroundColor: colors.navHex}}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center py-4">
-          <div className="flex items-center space-x-4">
+        <div className="flex justify-center items-center py-4">
+          <div className="flex items-center justify-center">
             <img 
               src="/caelestis-logo.svg" 
               alt="Caelestis la maison" 
-              className="h-7 w-auto text-white"
+              className="h-12 w-auto"
+              style={{ width: '62%', maxWidth: '400px', minWidth: '250px' }}
             />
           </div>
-          <div className="hidden md:flex space-x-4">
-            <Link to="/" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
-              Dashboard
-            </Link>
-            <Link to="/scan" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
-              Scan
-            </Link>
-            <Link to="/inventory" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
-              Inventory
-            </Link>
-            <Link to="/children" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
-              Children
-            </Link>
-            <Link to="/settings" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
-              Settings
-            </Link>
-          </div>
+        </div>
+        
+        {/* Desktop navigation */}
+        <div className="hidden md:flex justify-center space-x-6 pb-2">
+          <Link to="/" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
+            Dashboard
+          </Link>
+          <Link to="/scan" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
+            Scan
+          </Link>
+          <Link to="/inventory" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
+            Inventory
+          </Link>
+          <Link to="/children" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
+            Children
+          </Link>
+          <Link to="/settings" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
+            Settings
+          </Link>
         </div>
         
         {/* Mobile navigation */}
