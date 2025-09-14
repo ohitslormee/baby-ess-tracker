@@ -137,6 +137,32 @@ const InventoryList = () => {
     }
   };
 
+  const updateStock = async (item, newStock) => {
+    try {
+      await axios.put(`${API}/inventory/${item.id}`, {
+        current_stock: newStock
+      });
+      toast.success(`Stock updated to ${newStock} units`);
+      fetchInventory();
+    } catch (error) {
+      console.error('Error updating stock:', error);
+      toast.error('Failed to update stock');
+    }
+  };
+
+  const updateMinStockAlert = async (item, newMinStock) => {
+    try {
+      await axios.put(`${API}/inventory/${item.id}`, {
+        min_stock_alert: newMinStock
+      });
+      toast.success(`Low stock alert updated to ${newMinStock} units`);
+      fetchInventory();
+    } catch (error) {
+      console.error('Error updating min stock alert:', error);
+      toast.error('Failed to update min stock alert');
+    }
+  };
+
   const handleQuickAdd = (item) => {
     const quantity = parseInt(prompt('How many units to add?') || '1');
     if (quantity > 0) {
