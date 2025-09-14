@@ -272,45 +272,6 @@ const Home = () => {
             </Link>
           </div>
         </div>
-
-        {/* Low Stock Alert */}
-        {lowStockItems.length > 0 && (
-          <Card className="bg-orange-50 border-orange-200">
-            <CardHeader>
-              <CardTitle className="flex items-center text-orange-800">
-                <AlertTriangle className="h-5 w-5 mr-2" />
-                Low Stock Alert
-              </CardTitle>
-              <CardDescription className="text-orange-600">
-                These items are running low and need restocking
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {lowStockItems.slice(0, 5).map((item) => (
-                  <div key={item.id} className="flex items-center justify-between p-3 bg-white rounded-lg border border-orange-200">
-                    <div>
-                      <h4 className="font-medium text-gray-900">{item.name}</h4>
-                      <p className="text-sm text-gray-600">{item.category} • {item.brand}</p>
-                    </div>
-                    <Badge variant={item.current_stock === 0 ? "destructive" : "secondary"}>
-                      {item.current_stock} {item.unit_type}
-                    </Badge>
-                  </div>
-                ))}
-              </div>
-              {lowStockItems.length > 5 && (
-                <div className="mt-4 text-center">
-                  <Link to="/inventory">
-                    <Button variant="outline" className="text-orange-700 border-orange-300 hover:bg-orange-100">
-                      View All Low Stock Items
-                    </Button>
-                  </Link>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        )}
       </div>
     </div>
   );
