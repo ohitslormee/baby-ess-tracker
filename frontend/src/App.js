@@ -227,7 +227,13 @@ const Home = () => {
                     <CardContent className="space-y-3">
                       <div className="text-center">
                         <div className={`text-3xl font-bold ${status.color}`}>
-                          {item.current_stock}
+                          <EditableQuantity
+                            value={item.current_stock}
+                            onSave={(newStock) => updateStock(item, newStock)}
+                            className={`text-3xl font-bold ${status.color}`}
+                            inputClassName="text-3xl font-bold text-center w-20"
+                            min={0}
+                          />
                         </div>
                         <p className="text-sm text-gray-600">{item.unit_type} remaining</p>
                       </div>
