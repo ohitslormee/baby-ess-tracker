@@ -25,38 +25,38 @@ const Navigation = () => {
   return (
     <nav className={`bg-gradient-to-r ${colors.nav} text-white shadow-lg`} style={{backgroundColor: colors.navHex}}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-center items-center py-4">
+        <div className="flex justify-center items-center py-2">
           <div className="flex items-center justify-center">
             <img 
               src="/caelestis-logo.svg" 
               alt="Caelestis la maison" 
-              className="h-12 w-auto"
-              style={{ width: '62%', maxWidth: '400px', minWidth: '250px' }}
+              className="h-8 w-auto"
+              style={{ width: '62%', maxWidth: '320px', minWidth: '200px' }}
             />
           </div>
         </div>
         
         {/* Desktop navigation */}
-        <div className="hidden md:flex space-x-4">
-          <Link to="/" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
+        <div className="hidden md:flex justify-center space-x-6 pb-2">
+          <Link to="/" className="px-2 py-1 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
             Dashboard
           </Link>
-          <Link to="/scan" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
+          <Link to="/scan" className="px-2 py-1 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
             Scan
           </Link>
-          <Link to="/inventory" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
+          <Link to="/inventory" className="px-2 py-1 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
             Inventory
           </Link>
-          <Link to="/children" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
+          <Link to="/children" className="px-2 py-1 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
             Child
           </Link>
-          <Link to="/settings" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
+          <Link to="/settings" className="px-2 py-1 rounded-md text-sm font-medium hover:bg-black/10 transition-colors">
             Settings
           </Link>
         </div>
         
         {/* Mobile navigation - single line */}
-        <div className="md:hidden pb-2">
+        <div className="md:hidden pb-1">
           <div className="flex justify-center space-x-2 overflow-x-auto">
             <Link to="/" className="px-2 py-1 rounded-md text-xs font-medium hover:bg-black/10 transition-colors whitespace-nowrap">
               Dashboard
