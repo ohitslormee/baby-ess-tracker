@@ -1,23 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 30" width="140" height="30">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 50" width="280" height="50">
   <defs>
     <style>
       .logo-main { 
         font-family: 'Rubik', -apple-system, BlinkMacSystemFont, sans-serif; 
         font-weight: 700; 
-        font-size: 16px; 
+        font-size: 28px; 
         fill: currentColor;
-        letter-spacing: 0.8px;
+        letter-spacing: 1.5px;
       }
       .logo-sub { 
         font-family: 'Rubik', -apple-system, BlinkMacSystemFont, sans-serif; 
         font-weight: 400; 
-        font-size: 8px; 
+        font-size: 14px; 
         fill: currentColor;
-        opacity: 0.8;
+        opacity: 0.85;
         font-style: italic;
       }
     </style>
   </defs>
-  <text x="0" y="18" class="logo-main">CAELESTIS</text>
-  <text x="0" y="27" class="logo-sub">la maison</text>
+  <text x="140" y="30" class="logo-main" text-anchor="middle">CAELESTIS</text>
+  <text x="140" y="44" class="logo-sub" text-anchor="middle">la maison</text>
 </svg>
