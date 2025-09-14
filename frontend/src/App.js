@@ -29,9 +29,8 @@ const Navigation = () => {
           <div className="flex items-center space-x-4">
             <img 
               src="/caelestis-logo.svg" 
-              alt="Caelestis" 
-              className="h-8 w-auto"
-              style={{ filter: 'brightness(0) invert(1)' }}
+              alt="Caelestis la maison" 
+              className="h-7 w-auto text-white"
             />
           </div>
           <div className="hidden md:flex space-x-4">
