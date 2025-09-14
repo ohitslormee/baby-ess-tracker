@@ -247,7 +247,7 @@ const ChildrenDetails = () => {
 
                   {child.height && (
                     <div className="flex items-center gap-2">
-                      <Ruler2 className="h-4 w-4 text-gray-500" />
+                      <Ruler className="h-4 w-4 text-gray-500" />
                       <div>
                         <p className="text-sm font-medium">Height</p>
                         <p className="text-sm text-gray-600">{child.height} cm</p>
