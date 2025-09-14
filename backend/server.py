@@ -197,6 +197,20 @@ async def get_inventory_item(item_id: str):
         raise HTTPException(status_code=404, detail="Item not found")
     return InventoryItem(**parse_from_mongo(item))
 
+@api_router.get("/inventory/low-stock")
+async def get_low_stock_items():
+    """Get items that are below their minimum stock alert level"""
+    pipeline = [
+        {
+            "$expr": {
+                "$lte": ["$current_stock", "$min_stock_alert"]
+            }
+        }
+    ]
+    
+    items = await db.inventory.aggregate(pipeline).to_list(1000)
+    return [InventoryItem(**parse_from_mongo(item)) for item in items]
+
 @api_router.get("/inventory/barcode/{barcode}", response_model=InventoryItem)
 async def get_inventory_by_barcode(barcode: str):
     """Get inventory item by barcode"""
