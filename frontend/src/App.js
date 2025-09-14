@@ -113,41 +113,95 @@ const Home = () => {
           <p className="text-gray-600 text-lg">Track your baby essentials with smart inventory management</p>
         </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">Total Items</CardTitle>
-              <Package className={`h-4 w-4 ${colors.primaryText}`} />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-gray-900">{stats.total_items}</div>
-              <p className="text-xs text-gray-500 mt-1">Items in inventory</p>
+        {/* Individual Item Cards */}
+        {inventoryItems.length === 0 ? (
+          <Card className="mb-8">
+            <CardContent className="text-center py-12">
+              <Package className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">No items in inventory</h3>
+              <p className="text-gray-600 mb-4">Start by scanning some barcodes to add items to your inventory.</p>
+              <Link to="/scan">
+                <Button className={`${colors.button} text-white`}>
+                  <Scan className="h-4 w-4 mr-2" />
+                  Start Scanning
+                </Button>
+              </Link>
             </CardContent>
           </Card>
-
-          <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">Low Stock</CardTitle>
-              <TrendingDown className="h-4 w-4 text-orange-500" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-orange-600">{stats.low_stock_items}</div>
-              <p className="text-xs text-gray-500 mt-1">Items need restocking</p>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">Out of Stock</CardTitle>
-              <AlertTriangle className="h-4 w-4 text-red-500" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-red-600">{stats.out_of_stock_items}</div>
-              <p className="text-xs text-gray-500 mt-1">Items out of stock</p>
-            </CardContent>
-          </Card>
-        </div>
+        ) : (
+          <div className="mb-8">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-bold text-gray-900">Your Inventory</h2>
+              <div className="text-sm text-gray-600">
+                {inventoryItems.length} item{inventoryItems.length !== 1 ? 's' : ''} total
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {inventoryItems.map((item) => {
+                const status = getStockStatus(item);
+                
+                return (
+                  <Card key={item.id} className="hover:shadow-lg transition-shadow">
+                    <CardHeader className="pb-3">
+                      <div className="flex justify-between items-start">
+                        <CardTitle className="text-lg truncate">{item.name}</CardTitle>
+                        <Badge variant={status.variant} className="ml-2">
+                          {status.text}
+                        </Badge>
+                      </div>
+                      <CardDescription className="text-sm">
+                        {item.category} {item.brand && `• ${item.brand}`}
+                      </CardDescription>
+                    </CardHeader>
+                    
+                    <CardContent className="space-y-3">
+                      <div className="text-center">
+                        <div className={`text-3xl font-bold ${status.color}`}>
+                          {item.current_stock}
+                        </div>
+                        <p className="text-sm text-gray-600">{item.unit_type} remaining</p>
+                      </div>
+                      
+                      {item.current_stock <= item.min_stock_alert && (
+                        <div className="flex items-center gap-2 text-sm text-orange-600">
+                          <AlertTriangle className="h-4 w-4" />
+                          <span>Restock needed</span>
+                        </div>
+                      )}
+                      
+                      <div className="flex gap-2 pt-2">
+                        <Button
+                          size="sm"
+                          onClick={() => {
+                            const qty = parseInt(prompt('How many units to add?') || '1');
+                            if (qty > 0) addStock(item.id, qty);
+                          }}
+                          className="flex-1 text-xs"
+                        >
+                          <Plus className="h-3 w-3 mr-1" />
+                          Add
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => {
+                            const qty = parseInt(prompt('How many units used?') || '1');
+                            if (qty > 0) useItem(item, qty);
+                          }}
+                          disabled={item.current_stock === 0}
+                          className="flex-1 text-xs"
+                        >
+                          <Minus className="h-3 w-3 mr-1" />
+                          Use
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {/* Quick Actions */}
         <div className="mb-8">
